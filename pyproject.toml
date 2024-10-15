@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "wandelbots_py"
+name = "wandelbots"
 version = "0.7.1"
 description = "Official Python client for the Wandelbots API"
 authors = ["Martin George <martin.george@wandelbots.com>"]
