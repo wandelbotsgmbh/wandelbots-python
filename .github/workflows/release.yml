@@ -44,17 +44,12 @@ jobs:
       #    pip install twine
       #    twine upload dist/*
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
+      - name: Install python-semantic-release
+        run: pip install python-semantic-release
 
-      - name: Install semantic-release
-        run: npm install -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/release-notes-generator
-
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: semantic-release
+      #- name: Release
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      #    PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      #  run: semantic-release publish
