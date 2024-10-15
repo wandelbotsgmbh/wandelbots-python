@@ -1,0 +1,58 @@
+stages:
+  - test
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+test:
+  stage: test
+  image: python:3.9
+  before_script:
+    - apt-get update && apt-get install -y jq curl git docker.io
+    - echo "Spinning up an instance"
+    - INSTANCE_RESPONSE=$(curl -s "https://k8s.wabo.run/instance?duration=60&install_service_manager=true")
+    - IP=$(echo $INSTANCE_RESPONSE | jq -r '.ip')
+    - echo "Starting Docker daemon"
+    - dockerd & # Start Docker daemon
+    - sleep 20 # Wait for Docker daemon to start
+    - echo "machine github.com login ${GITHUB_USER_NOVA_GO} password ${GITHUB_TOKEN_NOVA_GO}" >> ~/.netrc
+    - export GOPRIVATE=github.com/wandelbotsgmbh/*
+    - echo "Logging into Docker registry"
+    - echo "YZRS2!_7tiisBQS" | docker login registry-1.docker.io -u wandelbotscb --password-stdin
+    - sleep 30 # Wait for bootup
+    - |
+      echo "Instance IP: $IP"
+      echo "Creating a default cell"
+    - |
+      curl --request POST --url http://$IP/api/v1/internal/cells --header 'Content-Type: application/json' --data '{"name": "cell"}'
+    - sleep 30 # Wait for Cell to be created
+    - echo "Setting up a virtual robot"
+    - |
+      curl --request POST \
+        --url http://$IP/api/v1/internal/cells/cell/controllers \
+        --header 'Accept: application/json' \
+        --header 'Content-Type: application/json' \
+        --data '{
+          "name": "virtual-robot",
+          "configuration": {
+            "kind": "VirtualController",
+            "manufacturer": "universalrobots",
+            "type": "universalrobots-ur5e",
+            "position": "[1.17, -1.57, 1.36, 1.03, 1.29, 1.28, 0]"
+          }
+        }'
+    - pip install poetry
+    - poetry install
+    - mkdir envs
+    - touch envs/.env.tests
+    - echo "WANDELAPI_BASE_URL=http://$IP" > envs/.env.tests
+    - echo "CELL_ID=cell" >> envs/.env.tests
+    - echo "MOTION_GROUP=0@virtual-robot" >> envs/.env.tests
+    - echo "TCP=Flange" >> envs/.env.tests
+  script:
+    - cp envs/.env.tests envs/test_.env.tests
+    - poetry run pytest -rs -v
