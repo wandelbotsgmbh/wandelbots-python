@@ -36,13 +36,14 @@ jobs:
         run: |
           poetry build
 
-      #- name: Publish to PyPI
+      #- name: Publish to TestPyPI
       #  env:
-      #    TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      #    TWINE_USERNAME: __token__
+      #    TWINE_PASSWORD: ${{ secrets.TEST_PYPI_TOKEN }}
+      #    TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
       #  run: |
       #    pip install twine
-      #    twine upload dist/*
+      #    python -m twine upload --repository-url $TWINE_REPOSITORY_URL dist/* -u __token__ -p ${{ secrets.TEST_PYPI_TOKEN }}
 
       - name: Install python-semantic-release
         run: pip install python-semantic-release
@@ -50,6 +51,5 @@ jobs:
       #- name: Release
       #  env:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #    PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      #    PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      #  run: semantic-release publish
+      #    PYPI_TOKEN: ${{ secrets.TEST_PYPI_TOKEN }}
+      #  run: semantic-release publish --pypi-token ${{ secrets.TEST_PYPI_TOKEN }}
