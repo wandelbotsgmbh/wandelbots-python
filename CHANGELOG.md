@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.1.4 (2024-10-16)
+
+### Fixes
+
+* fix: invalid toml ([`b3523b1`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/b3523b1b4d2700d956d0189671d938bf21f638c1))
+
+* fix: build ([`9d57d48`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/9d57d48d76a566113b423e92d99bbabfdd4d2b51))
+
+
 ## v0.1.3 (2024-10-16)
 
 ### Fixes
