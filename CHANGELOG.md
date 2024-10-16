@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.8 (2024-10-16)
+
+### Fixes
+
+* fix: remove ([`9ade306`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/9ade306fda726a808b942697fb907cfeb1cdc1a1))
+
+
 ## v0.1.7-rc.1 (2024-10-16)
 
 ### Fixes
