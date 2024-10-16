@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.3 (2024-10-16)
+
+### Fixes
+
+* fix: ref version in toml ([`a023179`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a023179741b0256146eea2acd12ca02752221ccd))
+
+
 ## v0.1.2 (2024-10-16)
 
 ### Fixes
