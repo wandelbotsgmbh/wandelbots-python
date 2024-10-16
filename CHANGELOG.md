@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.1 (2024-10-16)
+
+### Fixes
+
+* fix: build package ([`4596422`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/45964227ea376d776547cb7d59ee0deeb95a1d77))
+
+
 ## v0.1.0 (2024-10-16)
 
 ### Features
