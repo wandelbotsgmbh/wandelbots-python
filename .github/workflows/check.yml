@@ -23,7 +23,14 @@ jobs:
         run: |
           pip install poetry
           poetry install
+          mkdir envs
+          touch envs/.env.tests
+          echo "WANDELAPI_BASE_URL=test.instance.wandelbots.io" > envs/.env.tests
+          echo "CELL_ID=cell" >> envs/.env.tests
+          echo "MOTION_GROUP=0@virtual-robot" >> envs/.env.tests
+          echo "TCP=Flange" >> envs/.env.tests
 
       - name: Run tests
         run: |
+          cp envs/.env.tests envs/test_.env.tests
           poetry run pytest -rs -v
