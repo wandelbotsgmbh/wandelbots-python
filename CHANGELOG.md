@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.6 (2024-10-16)
+
+### Fixes
+
+* fix: bump version manually ([`8f3b0f2`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/8f3b0f20da91d786ee9c40314355b6ecbbbd5449))
+
+
 ## v0.1.5 (2024-10-16)
 
 ### Fixes
