@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.5 (2024-10-16)
+
+### Fixes
+
+* fix: add build command ([`a834641`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a834641353013df01dd123912c0110859cff82d4))
+
+
 ## v0.1.4 (2024-10-16)
 
 ### Fixes
