@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.1 (2024-10-16)
+
+### Fixes
+
+* fix: check CI env first ([`89f46bc`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/89f46bcd85e0e3c4abbb90b93f740432c317d6a0))
+
+
 ## v0.2.0 (2024-10-16)
 
 ### Features
