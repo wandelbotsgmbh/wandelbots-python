@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.7-rc.1 (2024-10-16)
+
+### Fixes
+
+* fix: find prerelease ([`d3c7599`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/d3c7599fa9d19edd1497258bdea1725e3ec057aa))
+
+
 ## v0.1.7 (2024-10-16)
 
 ### Fixes
