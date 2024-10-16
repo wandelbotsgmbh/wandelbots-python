@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.0 (2024-10-16)
+
+### Features
+
+* feat: publish ([`731f86c`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/731f86c6c8ac7f72663e89c86a7ce294c963da05))
+
+
 ## v0.1.8 (2024-10-16)
 
 ### Fixes
