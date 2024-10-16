@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.1.2 (2024-10-16)
+
+### Fixes
+
+* fix: use token instead of pw less ([`45cfde2`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/45cfde2aabdfb844969f9f2df9200fab21003ff3))
+
+
 ## v0.1.1 (2024-10-16)
 
 ### Fixes
