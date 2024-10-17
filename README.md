@@ -14,7 +14,6 @@ Current Features:
 
 - [Requirements](#requirements)
 - [Build](#build)
-- [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Testing](#testing)
 
@@ -24,31 +23,45 @@ This library requires
 
 - Python >=3.9
 
+### Installation
+
+To use the library, first install it using the following command
+
+```bash
+pip install wandelbots
+```
+
+Then import the library in your code
+
+```python
+from wandelbots import Instance, MotionGroup, Planner
+```
+
 ### Development
 
 To install the development dependencies, run the following command
 
 ```bash
-$ poetry install
+poetry install
 ```
 
 To remove an old virtual environment and create a new one, first get the name of the old environment by running
 
 ```bash
-$ poetry env info
+poetry env info
 ```
 
 Then remove the old environment and create a new one with the following commands
 
 ```bash
-$ poetry env remove <name-of-env>
-$ poetry install
+poetry env remove <name-of-env>
+poetry install
 ```
 
 Run the poetry shell to activate the virtual environment
 
 ```bash
-$ poetry shell
+poetry shell
 ```
 
 ### Build
@@ -56,15 +69,15 @@ $ poetry shell
 To build the package locally, run the following command
 
 ```bash
-$ poetry build
+poetry build
 ```
 
 This will create a `dist/` directory with the built package (`.tar.gz` and `.whl` files).
 
-### Installation
+#### Installation
 
 ```bash
-$ pip install dist/wandelbots-python-0.5.0-py3-none-any.whl
+pip install dist/wandelbots-python-0.5.0-py3-none-any.whl
 ```
 
 ### Basic Usage
