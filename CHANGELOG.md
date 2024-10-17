@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.6 (2024-10-17)
+
+### Fixes
+
+* fix: move example files ([`bca0d5f`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/bca0d5f1cbc68aa4b131cc93ed8e192e378742e7))
+
+
 ## v0.2.5 (2024-10-17)
 
 ### Fixes
