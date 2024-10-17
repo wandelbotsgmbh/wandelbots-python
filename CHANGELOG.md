@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.5 (2024-10-17)
+
+### Fixes
+
+* fix: set changelog path ([`f3ccbda`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/f3ccbdaaea89a2eddad297022dda530fb14e7e21))
+
+
 ## v0.2.4 (2024-10-17)
 
 ### Fixes
