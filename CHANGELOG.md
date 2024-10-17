@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.7 (2024-10-17)
+
+### Fixes
+
+* fix: include .env ([`8faa9c6`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/8faa9c626edfa656823c2e120d4e4a9e6fa142be))
+
+
 ## v0.2.6 (2024-10-17)
 
 ### Fixes
