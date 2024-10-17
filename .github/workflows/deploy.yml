@@ -20,7 +20,7 @@ jobs:
           python -m pip install -r requirements.txt
       - name: Build the JupyterLite site
         run: |
-          jupyter lite build --contents examples --output-dir dist
+          jupyter lite build --contents examples --output-dir dist --config jupyter_lite_config.json
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
