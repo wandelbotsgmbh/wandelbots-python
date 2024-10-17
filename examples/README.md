@@ -12,6 +12,8 @@ CELL_ID=cell
 TCP=Flange
 ```
 
+# Python Examples
+
 ## 01-Basic
 
 The [01_basic](01_basic.py) example demonstrates how to create an `Instance` and `MotionGroup` object, and how to use them to interact with the Wandelbots API.
@@ -28,17 +30,8 @@ The [03_plan_and_execute_async](03_plan_and_execute_async.py) example demonstrat
 
 The [04_execute_in_background](04_execute_in_background.py) example demonstrates how to execute a motion in the background.
 
+# Jupyter-Notebook Examples
+
 ## 05-Jupyter-Notebook
+
 The [05_notebook](05_notebook.ipynb) example demonstrates how to use the library in a Jupyter notebook.
-
-## 0x-FastAPI
-
-...
-
-## 0x-Pose-Transformations
-
-...
-
-## 0x-IOs
-
-...
