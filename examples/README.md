@@ -34,4 +34,6 @@ The [04_execute_in_background](04_execute_in_background.py) example demonstrates
 
 ## 05-Jupyter-Notebook
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/wandelbotsgmbh/wandelbots-python/HEAD?labpath=examples%2F05_notebook.ipynb)
+
 The [05_notebook](05_notebook.ipynb) example demonstrates how to use the library in a Jupyter notebook.

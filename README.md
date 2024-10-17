@@ -1,5 +1,7 @@
 # @wandelbots/wandelbots-python
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/wandelbotsgmbh/wandelbots-python/HEAD?labpath=examples%2F05_notebook.ipynb)
+
 This library provides a wrapper around the Wandelbots API. Under the hood it queries the API endpoints directly, not using [`wandelbots_api_client`](https://pypi.org/project/wandelbots-api-client/) (_which is still required as dependencies since the auto-generated types are used from the package for type-checking convenience_).
 
 The wrapper is meant to ease the interaction with the Wandelbots API by providing a simpler interface for initializing a `MotionGroup` and interacting with it.
