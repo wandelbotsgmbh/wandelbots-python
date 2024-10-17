@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.4 (2024-10-17)
+
+### Fixes
+
+* fix: add jupiter config ([`01df795`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/01df7959737af6ec26d8c9d708abe1f44dbb2416))
+
+
 ## v0.2.3 (2024-10-17)
 
 ### Fixes
