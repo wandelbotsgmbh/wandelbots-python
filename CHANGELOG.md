@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.3 (2024-10-17)
+
+### Fixes
+
+* fix: add examples ([`ccfed47`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/ccfed47539b6f9235cc707eec5e3c4f4ee865fdc))
+
+
 ## v0.2.2 (2024-10-17)
 
 ### Fixes
