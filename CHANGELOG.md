@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.2.9 (2024-10-17)
+
+### Fixes
+
+* fix: add .env meme ([`e380c02`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/e380c0232ee49a2ac3e02cddf7bd365ff08ee876))
+
+### Unknown
+
+* add readme steps ([`c971299`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/c97129992e317d1b01d0e6596956d96d77a15d7c))
+
+
 ## v0.2.8 (2024-10-17)
 
 ### Fixes
