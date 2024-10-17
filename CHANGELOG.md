@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.8 (2024-10-17)
+
+### Fixes
+
+* fix: install packages ([`b09e25c`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/b09e25c13f5ca983c251d9d04f08111aabe063e8))
+
+
 ## v0.2.7 (2024-10-17)
 
 ### Fixes
