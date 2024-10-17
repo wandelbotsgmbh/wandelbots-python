@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.3.2 (2024-10-17)
+
+### Fixes
+
+* fix: delete local jupiter ([`f3563a9`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/f3563a93f095b23b6e0966458f7f8099e4ca7042))
+
+
 ## v0.3.1 (2024-10-17)
 
 ### Fixes
