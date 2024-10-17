@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.3.1 (2024-10-17)
+
+### Fixes
+
+* fix: add home pos ([`3ce314e`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/3ce314ec87ab24180402040bc7a4ba056ff4339b))
+
+
 ## v0.3.0 (2024-10-17)
 
 ### Features

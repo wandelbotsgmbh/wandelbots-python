@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wandelbots"
-version = "0.3.0"
+version = "0.3.1"
 description = "Official Python client for the Wandelbots API"
 authors = ["Martin George <martin.george@wandelbots.com>"]
 readme = "README.md"
