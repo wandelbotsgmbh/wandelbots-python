@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.2.2 (2024-10-17)
+
+### Fixes
+
+* fix: only add python kernels ([`2eff865`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/2eff865d0f12d4ae1f9c0b4ef847e81bbd0daf41))
+
+
 ## v0.2.1 (2024-10-16)
 
 ### Fixes
