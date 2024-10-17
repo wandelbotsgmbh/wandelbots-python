@@ -172,6 +172,8 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+_output
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
@@ -191,3 +193,4 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks
 .DS_Store
+.jupyterlite.doit.db
