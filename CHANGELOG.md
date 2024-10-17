@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.3.0 (2024-10-17)
+
+### Features
+
+* feat: add binder example ([`20a906d`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/20a906d4f430f0196006f01919633f6bf29b5f11))
+
+
 ## v0.2.9 (2024-10-17)
 
 ### Fixes
