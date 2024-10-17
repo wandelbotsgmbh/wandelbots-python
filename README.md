@@ -7,6 +7,8 @@ This library provides a wrapper around the Wandelbots API. Under the hood it que
 The wrapper is meant to ease the interaction with the Wandelbots API by providing a simpler interface for initializing a `MotionGroup` and interacting with it.
 For the full feature set of our API please refer to the [official documentation](https://docs.wandelbots.com/) and use the [`wandelbots_api_client`](https://pypi.org/project/wandelbots-api-client/) package directly.
 
+You can try the features of this library in a Jupyter notebook by clicking the Binder badge above. Create a new Instance by registering on the [Wandelbots website](https://portal.wandelbots.io/) and use the credentials to interact with the API.
+
 Current Features:
 
 - Sync and Async Planning and Execution
