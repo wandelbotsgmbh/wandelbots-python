@@ -1,7 +1,7 @@
 import logging
 
-
-_ROOT_LOGGER_NAME = "nova"
+# TODO: Adjust to current package name
+_ROOT_LOGGER_NAME = "wandelbots"
 
 
 def _get_logger(name: str):
