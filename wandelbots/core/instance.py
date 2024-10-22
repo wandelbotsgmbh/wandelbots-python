@@ -2,7 +2,7 @@ from wandelbots.util.logger import _get_logger
 
 
 class Instance:
-    def __init__(self, url, user=None, password=None):
+    def __init__(self, url="http://api-gateway:8080", user=None, password=None):
         self.user = user
         self.password = password
         self.url = self._parse_url(url)
