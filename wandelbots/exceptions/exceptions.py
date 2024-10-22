@@ -8,8 +8,8 @@ class PlanningFailedException(Exception):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)
-        
-        
+
+
 class PlanningPartialSuccessWarning(Exception):
     def __init__(self, message, motion):
         self.motion = motion

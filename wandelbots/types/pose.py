@@ -130,7 +130,12 @@ class Pose(Pose):
 
     def __str__(self):
         # Check if ANSI colors should be disabled (e.g., when running in CI or non-interactive terminal)
-        use_ansi = os.getenv("CI") is None and hasattr(sys.stdout, 'fileno') and callable(sys.stdout.fileno) and os.isatty(sys.stdout.fileno())
+        use_ansi = (
+            os.getenv("CI") is None
+            and hasattr(sys.stdout, "fileno")
+            and callable(sys.stdout.fileno)
+            and os.isatty(sys.stdout.fileno())
+        )
 
         # ANSI escape codes for colors and bold formatting
         bold_start = "\033[1m" if use_ansi else ""

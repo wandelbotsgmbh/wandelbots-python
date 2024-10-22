@@ -1,17 +1,17 @@
 import numpy as np
 from wandelbots_api_client.models import Vector3d
 
+
 class Vector3d(Vector3d):
-    
+
     x: float = 0
     y: float = 0
     z: float = 0
-    
-    
+
     @staticmethod
     def from_list(list):
-        """ Create a Vector3d from a list of 3 elements. Assumes the list is in the order [x, y, z]
-        and units are in mm. """
+        """Create a Vector3d from a list of 3 elements. Assumes the list is in the order [x, y, z]
+        and units are in mm."""
         assert len(list) == 3
         return Vector3d(
             x=list[0],
@@ -28,7 +28,7 @@ class Vector3d(Vector3d):
         return self.as_array()[index]
 
     def __len__(self) -> int:
-        """ Returns the number of coordinates. """
+        """Returns the number of coordinates."""
         return 3
 
     def __iter__(self):

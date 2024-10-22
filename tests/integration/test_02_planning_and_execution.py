@@ -9,7 +9,7 @@ from wandelbots.types import Vector3d as v
 @pytest.mark.asyncio
 async def test_motion_planning_and_execution():
     """Test planning and executing a motion against the actual motion-group backend."""
-    
+
     instance = Instance(
         url=os.getenv("WANDELAPI_BASE_URL"),
         user=os.getenv("NOVA_USERNAME"),
@@ -41,11 +41,13 @@ async def test_motion_planning_and_execution():
 
     # Check if the motion plan was successful
     assert plan_result.motion is not None, "Failed to plan motion"
-    
+
     # Execute planned motion
     async def execute_in_background(motion: str, speed: int):
         try:
-            async for move_response in motion_group.execute_motion_stream_async(motion, speed):
+            async for move_response in motion_group.execute_motion_stream_async(
+                motion, speed
+            ):
                 print(move_response)
         except MotionExecutionInterruptedError:
             print("Motion execution was interrupted")
@@ -58,4 +60,6 @@ async def test_motion_planning_and_execution():
     await asyncio.sleep(2)
     motion_group.stop()
     await motion_task
-    assert not motion_group.is_executing(), "Motion-group should not be executing motion after stop command"
+    assert (
+        not motion_group.is_executing()
+    ), "Motion-group should not be executing motion after stop command"
