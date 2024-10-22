@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.3.5 (2024-10-22)
+
+### Fixes
+
+* fix: set internal address ([`81501b8`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/81501b8e5af55963102d86584ebb4b96b03f8e46))
+
+### Unknown
+
+* Merge pull request #7 from wandelbotsgmbh/bugfix/internal-api-address
+
+fix: set internal address ([`af13ac4`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/af13ac4c20c939905cddf81ec448ff01ed597ffd))
+
+* Merge pull request #6 from wandelbotsgmbh/feature/sync-motion-stream
+
+feat: sync motion execution without wrapper ([`b5cb287`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/b5cb2871542f013f974c47ce0cb1fab7ce46569f))
+
+* Merge branch 'main' into feature/sync-motion-stream ([`e69b440`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/e69b440108380de7522171ad32a44615b6a378e0))
+
+
 ## v0.3.4 (2024-10-22)
 
 ### Fixes
@@ -20,9 +39,15 @@ test: add unit test ([`e0faa30`](https://github.com/wandelbotsgmbh/wandelbots-py
 
 ## v0.3.3 (2024-10-22)
 
+### Features
+
+* feat: remove wrapper around async motion execution and use sync websocket instead ([`84f9634`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/84f9634b9366d1e06245feebf0fc5aa50dba47bd))
+
 ### Fixes
 
 * fix: set default gateway ([`73a4c84`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/73a4c845c7c86696f9c4d3d3b9ca3f55a588a08d))
+
+* fix: change root logger name to current package name ([`f18ca98`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/f18ca98a08c2e189d129eb05a30c3b8f508e95cf))
 
 ### Unknown
 
