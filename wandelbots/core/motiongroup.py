@@ -1,6 +1,6 @@
 import asyncio
 
-from typing import AsyncGenerator, Literal
+from typing import AsyncGenerator, Literal, Callable
 from contextlib import asynccontextmanager
 from wandelbots.types import MoveResponse, Pose
 
@@ -193,17 +193,30 @@ class MotionGroup:
             ):
                 pass  # Consuming the response silently
 
+    def _check_if_event_loop_is_running(self) -> bool:
+        """Check if an event loop is already running."""
+        try:
+            asyncio.get_running_loop()
+            return True
+        except RuntimeError:
+            return False
+
     def execute_motion(
         self,
         motion: str,
         speed: int,
+        response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",
+        callback: Callable[[MoveResponse], None] = None,
     ) -> None:
-        """This method is blocking and allows executing a motion synchronously
-        within a asyncio event loop."""
-        _loop = asyncio.get_event_loop()
-        _loop.run_until_complete(
-            self.execute_motion_async(motion=motion, speed=speed, direction=direction)
+        motion_api.stream_motion(
+            self.instance,
+            self.cell,
+            motion,
+            speed,
+            response_rate_ms,
+            direction,
+            callback,
         )
 
     def is_executing(self) -> bool:

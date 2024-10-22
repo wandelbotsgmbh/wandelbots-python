@@ -1,7 +1,11 @@
 import asyncio
-from typing import AsyncGenerator, Literal
-
 import wandelbots_api_client as wb_api
+import json
+
+from websockets.sync.client import connect
+from websockets.exceptions import ConnectionClosedError
+from typing import AsyncGenerator, Literal, Callable
+
 from wandelbots_api_client.rest import ApiException
 from wandelbots.core.instance import Instance
 from wandelbots.request.syncs import get, delete, post, put
@@ -12,6 +16,7 @@ from wandelbots.types import (
     PlanRequest,
     PlanResponse,
     MoveResponse,
+    StreamMoveResponse,
 )
 from wandelbots.exceptions import (
     MotionExecutionError,
@@ -142,3 +147,70 @@ async def stream_motion_async(
         raise MotionExecutionError(f"API Exception: {e}")
     finally:
         await wb_motion_api.api_client.close()
+
+
+def stream_motion(
+    instance: Instance,
+    cell: str,
+    motion: str,
+    playback_speed: int,
+    response_rate: int,
+    direction: Literal["forward", "backward"] = "forward",
+    callback: Callable[[MoveResponse], None] = None,
+) -> None:
+
+    uri = f"{instance.socket_uri}/cells/{cell}/motions/{motion}/execute{direction}"
+    uri += f"?playback_speed_in_percent={playback_speed}&response_rate={response_rate}"
+    logger.debug(f"Connecting to {uri}")
+    with connect(uri) as socket:
+        logger.debug(f"Connected to {uri}")
+        try:
+            while True:
+                response = json.loads(socket.recv())
+                try:
+                    response: StreamMoveResponse = StreamMoveResponse.model_validate(
+                        response["result"]
+                    )
+                except KeyError:
+                    logger.warning(f"Received unexpected message: {response}")
+                    continue
+                if hasattr(response, "error") and response.error:
+                    logger.error(f"Error in motion stream ({response.error.message})")
+                    raise MotionExecutionError(
+                        f"Error in motion stream ({response.error.message})"
+                    )
+                else:
+                    if hasattr(response, "stop_response") and response.stop_response:
+                        stop_code = response.stop_response.stop_code
+                        if stop_code == "STOP_CODE_PATH_END":
+                            logger.info("Motion has finished")
+                            return
+                        elif stop_code == "STOP_CODE_USER_REQUEST":
+                            logger.info("Motion stopped by user")
+                            raise MotionExecutionInterruptedError(
+                                "Motion stopped by user"
+                            )
+                        elif stop_code == "STOP_CODE_ERROR":
+                            stop_message = response.stop_response.message
+                            logger.error(f"Error in motion stream ({stop_message})")
+                            raise MotionExecutionError(
+                                f"Error in motion stream ({stop_message})"
+                            )
+                    elif hasattr(response, "move_response") and response.move_response:
+                        move_response = response.move_response
+                        current_location_on_trajectory = (
+                            move_response.current_location_on_trajectory
+                        )
+                        time_until_path_end = move_response.time_to_end
+                        logger.debug(
+                            f"Current location on trajectory: {current_location_on_trajectory} | time to path end: {time_until_path_end}"
+                        )
+                        callback(move_response) if callback else None
+
+        except ApiException as e:
+            logger.error(f"API Exception: {e}")
+            raise MotionExecutionError(f"API Exception: {e}")
+        except ConnectionClosedError:
+            logger.info("Connection to motion stream closed")
+        finally:
+            socket.close()
