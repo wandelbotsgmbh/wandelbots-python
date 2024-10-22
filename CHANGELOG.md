@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.3.3 (2024-10-22)
+
+### Fixes
+
+* fix: set default gateway ([`73a4c84`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/73a4c845c7c86696f9c4d3d3b9ca3f55a588a08d))
+
+### Unknown
+
+* Merge pull request #4 from wandelbotsgmbh/feature/set-default-gateway
+
+fix: set default gateway ([`17a81fd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/17a81fdeab1c2659667941a8e4fab49d6a219e9c))
+
+* Update README.md ([`bcfa3d9`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/bcfa3d9e6a98b964c27d3e69e8973756d206c550))
+
+
 ## v0.3.2 (2024-10-17)
 
 ### Fixes
