@@ -159,21 +159,21 @@ class MotionGroup:
         _loop = asyncio.get_event_loop()
         _loop.run_until_complete(self.execute_motion_async(motion=motion, speed=speed, direction=direction))
 
-    async def execute_motion_with_ios_async(
+    async def execute_async(
         self,
         motion: str,
         speed: int,
-        io_values: tuple[SetIO, ...] = (),
+        io_actions: tuple[SetIO, ...] = (),
         response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",
     ) -> None:
-        """Execute a motion asynchronously, consuming MoveResponse without yielding.
-        This wraps the execute_motion_stream_async method so it can be used without
-        calling it withing a 'async for' and instead just 'await' it.
+        """Execute a motion with IOs asynchronously, consuming MoveResponse without yielding.
+
+        EXPERIMENTAL: This method is not yet fully tested. It's using the experimental stream_move API.
         """
         async with self._async_execution_context(motion):
             await motion_api.stream_move_async(
-                self.instance, self.cell, motion, speed, response_rate_ms, direction, io_values
+                self.instance, self.cell, motion, speed, response_rate_ms, direction, io_actions
             )
 
     def is_executing(self) -> bool:

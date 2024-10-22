@@ -118,9 +118,16 @@ async def stream_motion_async(
         await wb_motion_api.api_client.close()
 
 
-async def _stream_move_generator(response_stream, motion, playback_speed, response_rate, direction, io_values):
+async def _stream_move_generator(
+        response_stream,
+        motion: str,
+        playback_speed: int,
+        response_rate: int,
+        direction: Literal["forward", "backward"] = "forward",
+        io_actions: tuple[SetIO, ...] = (),
+):
     move_request = wb_api.models.MoveRequest(
-        motion=motion, playback_speed_in_percent=playback_speed, response_rate=response_rate, set_ios=list(io_values)
+        motion=motion, playback_speed_in_percent=playback_speed, response_rate=response_rate, set_ios=list(io_actions)
     )
     if direction == "forward":
         request = wb_api.models.StreamMoveForward(forward=move_request)
@@ -132,7 +139,9 @@ async def _stream_move_generator(response_stream, motion, playback_speed, respon
     yield request
 
     async for response in response_stream:
-        print("Got Response")
+        current_location = response.current_location_on_trajectory
+        logger.info(f"Current Location: {current_location}")
+        logger.info("Motion Stream Cancelled by client.")
         if hasattr(response, "error") and response.error:
             logger.error(f"Error in motion stream ({response.error.message})")
             raise MotionExecutionError(f"Error in motion stream ({response.error.message})")
@@ -165,8 +174,13 @@ async def stream_move_async(
     playback_speed: int,
     response_rate: int,
     direction: Literal["forward", "backward"] = "forward",
-    io_values: tuple[SetIO, ...] = (),
+    io_actions: tuple[SetIO, ...] = (),
 ) -> None:
+    """Stream a motion with IOs asynchronously, consuming MoveResponse without yielding.
+
+    EXPERIMENTAL: This method is not yet fully tested. It's using the experimental stream_move API.
+    """
+
     # connect to API
     wb_motion_api = wb_api.MotionApi(_get_wb_api_client(instance))
     logger.debug(f"Connected to Motion API {wb_motion_api.api_client.configuration.host}")
@@ -180,7 +194,7 @@ async def stream_move_async(
                 playback_speed=playback_speed,
                 response_rate=response_rate,
                 direction=direction,
-                io_values=io_values,
+                io_actions=io_actions,
             ),
         )
     except ApiException as e:
