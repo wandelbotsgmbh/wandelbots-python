@@ -26,6 +26,7 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
+    "wandelbots/types/__init__.py"
 ]
 
 # Same as Black.

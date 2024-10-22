@@ -7,7 +7,7 @@ __all__ = [
     "MotionExecutionInterruptedError",
 ]
 
-from wandelbots.exceptions import (
+from .exceptions import (
     MotionExecutionInterruptedError,
     MotionExecutionTimedOutError,
     MotionExecutionError,

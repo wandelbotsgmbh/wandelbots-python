@@ -5,7 +5,7 @@
 # those types extend the wandelbots_api_client.models
 # for different purposes, like adding methods or properties
 
-__all__ = ["Vector3d", "Pose", "IOValue"]
+from wandelbots_api_client.models import *
 
 from .vector3d import Vector3d
 from .pose import Pose
