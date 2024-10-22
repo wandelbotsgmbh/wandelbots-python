@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.3.4 (2024-10-22)
+
+### Fixes
+
+* fix: set root logger name to correct package name ([`90603c4`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/90603c4b46bd7ff252d7a3840223e9ddda8d9972))
+
+### Testing
+
+* test: add unit test ([`7edc9c3`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7edc9c3789e9d2e08ae224a2b4ccd7945628b8f6))
+
+### Unknown
+
+* Merge pull request #5 from wandelbotsgmbh/test/add-unit-test
+
+test: add unit test ([`e0faa30`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/e0faa306457f3f1d9946065116d3f59fc3263515))
+
+
 ## v0.3.3 (2024-10-22)
 
 ### Fixes
