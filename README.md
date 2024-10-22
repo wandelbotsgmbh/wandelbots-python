@@ -105,7 +105,7 @@ my_robot = MotionGroup(
 )
 ```
 
-For further examples take a look at the [examples/](examples/).
+For further examples take a look at the [examples](https://github.com/wandelbotsgmbh/wandelbots-python/blob/main/examples/README.md).
 
 ### Testing
 

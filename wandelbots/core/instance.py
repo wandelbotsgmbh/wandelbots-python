@@ -2,7 +2,8 @@ from wandelbots.util.logger import _get_logger
 
 
 class Instance:
-    def __init__(self, url, user=None, password=None):
+    def __init__(self, url="http://api-gateway.wandelbots.svc.cluster.local:8080", user=None, password=None):
+        self._api_version = "v1"
         self.user = user
         self.password = password
         self.url = self._parse_url(url)
@@ -24,6 +25,16 @@ class Instance:
         else:  # assume http
             _url = "http://" + _url
         return _url
+
+    @property
+    def socket_uri(self):
+        if not self.has_auth():
+            _uri = self.url.replace("http", "ws").replace("https", "wss")
+            return f"{_uri}/api/{self._api_version}"
+        else:
+            _url_no_scheme = self.url.split("://")[1]
+            _uri = f"wss://{self.user}:{self.password}@{_url_no_scheme}"
+            return f"{_uri}/api/{self._api_version}"
 
     def _connect(self):
         self.logger.info(f"Connecting to {self.url}")
