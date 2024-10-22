@@ -139,9 +139,6 @@ async def _stream_move_generator(
     yield request
 
     async for response in response_stream:
-        current_location = response.current_location_on_trajectory
-        logger.info(f"Current Location: {current_location}")
-        logger.info("Motion Stream Cancelled by client.")
         if hasattr(response, "error") and response.error:
             logger.error(f"Error in motion stream ({response.error.message})")
             raise MotionExecutionError(f"Error in motion stream ({response.error.message})")
