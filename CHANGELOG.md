@@ -1,6 +1,38 @@
 # CHANGELOG
 
 
+## v0.3.4 (2024-10-22)
+
+### Fixes
+
+* fix: set root logger name to correct package name ([`90603c4`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/90603c4b46bd7ff252d7a3840223e9ddda8d9972))
+
+### Testing
+
+* test: add unit test ([`7edc9c3`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7edc9c3789e9d2e08ae224a2b4ccd7945628b8f6))
+
+### Unknown
+
+* Merge pull request #5 from wandelbotsgmbh/test/add-unit-test
+
+test: add unit test ([`e0faa30`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/e0faa306457f3f1d9946065116d3f59fc3263515))
+
+
+## v0.3.3 (2024-10-22)
+
+### Fixes
+
+* fix: set default gateway ([`73a4c84`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/73a4c845c7c86696f9c4d3d3b9ca3f55a588a08d))
+
+### Unknown
+
+* Merge pull request #4 from wandelbotsgmbh/feature/set-default-gateway
+
+fix: set default gateway ([`17a81fd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/17a81fdeab1c2659667941a8e4fab49d6a219e9c))
+
+* Update README.md ([`bcfa3d9`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/bcfa3d9e6a98b964c27d3e69e8973756d206c550))
+
+
 ## v0.3.2 (2024-10-17)
 
 ### Fixes
