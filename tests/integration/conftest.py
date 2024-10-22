@@ -3,15 +3,15 @@ import requests
 import os
 from dotenv import load_dotenv, find_dotenv
 
-@pytest.fixture(scope='session', autouse=True)
+
+@pytest.fixture(scope="session", autouse=True)
 def check_test_motion_group_available(request):
-    
     # Get config from .env file
     test_env = find_dotenv("envs/.env.tests")
     load_dotenv(test_env)
-    
+
     # Check if the environment is set correctly
-    nova_host = os.getenv("WANDELAPI_BASE_URL")    
+    nova_host = os.getenv("WANDELAPI_BASE_URL")
     if not nova_host:
         pytest.fail("WANDELAPI_BASE_URL not set in the environment.")
 
@@ -44,7 +44,7 @@ def check_test_motion_group_available(request):
             error_message = response.json().get("message", "Unknown error")
             skip_reason = f"Skipping tests: {error_message}. Response Code: {response.status_code}"
         except ValueError:
-            skip_reason = f"Skipping tests: Non-JSON response. Response Code: {response.status_code}, Error: {str(e)}"        
+            skip_reason = f"Skipping tests: Non-JSON response. Response Code: {response.status_code}, Error: {str(e)}"
         pytest.skip(skip_reason)
     except requests.RequestException as e:
         skip_reason = f"Skipping tests: {str(e)}"

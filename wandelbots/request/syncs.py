@@ -9,9 +9,7 @@ __logger = _get_logger(__name__)
 
 def _get_auth(instance: Instance) -> Optional[requests.auth.HTTPBasicAuth]:
     if instance.has_auth():
-        return requests.auth.HTTPBasicAuth(
-            username=instance.user, password=instance.password
-        )
+        return requests.auth.HTTPBasicAuth(username=instance.user, password=instance.password)
     return None
 
 
@@ -20,9 +18,7 @@ def _handle_request_error(err):
         if err.response.status_code == 401:
             __logger.error("401 Unauthorized access. Check your credentials.")
         else:
-            __logger.error(
-                f"HTTP error occurred: {err} - Response content: {err.response.text}"
-            )
+            __logger.error(f"HTTP error occurred: {err} - Response content: {err.response.text}")
     elif isinstance(err, requests.ConnectionError):
         __logger.error(f"Connection error occurred: {err}")
     elif isinstance(err, requests.Timeout):
@@ -53,9 +49,7 @@ def delete(url: str, instance: Instance) -> int:
 
 def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     try:
-        response = requests.post(
-            url, json=data, timeout=TIMEOUT, auth=_get_auth(instance)
-        )
+        response = requests.post(url, json=data, timeout=TIMEOUT, auth=_get_auth(instance))
         response.raise_for_status()
         return response.status_code, response.json()
     except requests.RequestException as err:
@@ -65,9 +59,7 @@ def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[D
 
 def put(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     try:
-        response = requests.put(
-            url, json=data, timeout=TIMEOUT, auth=_get_auth(instance)
-        )
+        response = requests.put(url, json=data, timeout=TIMEOUT, auth=_get_auth(instance))
         response.raise_for_status()
         return response.status_code, response.json()
     except requests.RequestException as err:

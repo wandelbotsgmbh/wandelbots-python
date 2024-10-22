@@ -7,16 +7,8 @@ from wandelbots.core.instance import Instance
 from wandelbots.request.syncs import get, delete, post, put
 from wandelbots.request.asyncs import post as async_post
 from wandelbots.util.logger import _get_logger
-from wandelbots.types import (
-    MotionIdsListResponse,
-    PlanRequest,
-    PlanResponse,
-    MoveResponse,
-)
-from wandelbots.exceptions import (
-    MotionExecutionError,
-    MotionExecutionInterruptedError,
-)
+from wandelbots.types import MotionIdsListResponse, PlanRequest, PlanResponse, MoveResponse, SetIO
+from wandelbots.exceptions import MotionExecutionError, MotionExecutionInterruptedError
 
 logger = _get_logger(__name__)
 
@@ -57,30 +49,24 @@ def plan_motion(instance: Instance, cell: str, plan_request: PlanRequest) -> boo
     logger.debug(f"Planning motion for cell {cell} on: {url}")
     code, response = post(url, data=plan_request.model_dump(), instance=instance)
     if code != 200:
-        logger.error(f"Failed to plan motion")
+        logger.error("Failed to plan motion")
         return None
     return PlanResponse.from_dict(response)
 
 
-async def plan_motion_async(
-    instance: Instance, cell: str, plan_request: PlanRequest
-) -> bool:
+async def plan_motion_async(instance: Instance, cell: str, plan_request: PlanRequest) -> bool:
     url = f"{_get_base_url(instance.url, cell)}"
     logger.debug(f"Async planning motion for cell {cell} on: {url}")
-    code, response = await async_post(
-        url, data=plan_request.model_dump(), instance=instance
-    )
+    code, response = await async_post(url, data=plan_request.model_dump(), instance=instance)
     if code != 200:
-        logger.error(f"Failed to plan motion")
+        logger.error("Failed to plan motion")
         return None
     return PlanResponse.from_dict(response)
 
 
 def _get_wb_api_client(instance: Instance) -> wb_api.ApiClient:
     _url = f"{instance.url}/api/v1"
-    _conf = wb_api.Configuration(
-        host=_url, username=instance.user, password=instance.password
-    )
+    _conf = wb_api.Configuration(host=_url, username=instance.user, password=instance.password)
     return wb_api.ApiClient(_conf)
 
 
@@ -93,21 +79,13 @@ async def stream_motion_async(
     direction: Literal["forward", "backward"] = "forward",
 ) -> AsyncGenerator[MoveResponse, None]:
     wb_motion_api = wb_api.MotionApi(_get_wb_api_client(instance))
-    logger.debug(
-        f"Connected to Motion API {wb_motion_api.api_client.configuration.host}"
-    )
-    _func = (
-        wb_motion_api.stream_move_forward
-        if direction == "forward"
-        else wb_motion_api.stream_move_backward
-    )
+    logger.debug(f"Connected to Motion API {wb_motion_api.api_client.configuration.host}")
+    _func = wb_motion_api.stream_move_forward if direction == "forward" else wb_motion_api.stream_move_backward
     try:
         async for response in _func(cell, motion, playback_speed, response_rate):
             if hasattr(response, "error") and response.error:
                 logger.error(f"Error in motion stream ({response.error.message})")
-                raise MotionExecutionError(
-                    f"Error in motion stream ({response.error.message})"
-                )
+                raise MotionExecutionError(f"Error in motion stream ({response.error.message})")
             else:
                 if hasattr(response, "stop_response") and response.stop_response:
                     stop_code = response.stop_response.stop_code
@@ -120,14 +98,10 @@ async def stream_motion_async(
                     elif stop_code == "STOP_CODE_ERROR":
                         stop_message = response.stop_response.message
                         logger.error(f"Error in motion stream ({stop_message})")
-                        raise MotionExecutionError(
-                            f"Error in motion stream ({stop_message})"
-                        )
+                        raise MotionExecutionError(f"Error in motion stream ({stop_message})")
                 elif hasattr(response, "move_response") and response.move_response:
                     move_response = response.move_response
-                    current_location_on_trajectory = (
-                        move_response.current_location_on_trajectory
-                    )
+                    current_location_on_trajectory = move_response.current_location_on_trajectory
                     time_until_path_end = move_response.time_to_end
                     logger.debug(
                         f"Current location on trajectory: {current_location_on_trajectory} | time to path end: {time_until_path_end}"
@@ -137,6 +111,78 @@ async def stream_motion_async(
     except asyncio.CancelledError:
         logger.info("Motion Stream Cancelled by client.")
         raise
+    except ApiException as e:
+        logger.error(f"API Exception: {e}")
+        raise MotionExecutionError(f"API Exception: {e}")
+    finally:
+        await wb_motion_api.api_client.close()
+
+
+async def _stream_move_generator(response_stream, motion, playback_speed, response_rate, direction, io_values):
+    move_request = wb_api.models.MoveRequest(
+        motion=motion, playback_speed_in_percent=playback_speed, response_rate=response_rate, set_ios=list(io_values)
+    )
+    if direction == "forward":
+        request = wb_api.models.StreamMoveForward(forward=move_request)
+    elif direction == "backward":
+        request = wb_api.models.StreamMoveBackward(backward=move_request)
+    else:
+        raise ValueError(f"Invalid direction: {direction}")
+
+    yield request
+
+    async for response in response_stream:
+        print("Got Response")
+        if hasattr(response, "error") and response.error:
+            logger.error(f"Error in motion stream ({response.error.message})")
+            raise MotionExecutionError(f"Error in motion stream ({response.error.message})")
+        else:
+            if hasattr(response, "stop_response") and response.stop_response:
+                stop_code = response.stop_response.stop_code
+                if stop_code == "STOP_CODE_PATH_END":
+                    logger.info("Motion has finished")
+                    return
+                elif stop_code == "STOP_CODE_USER_REQUEST":
+                    logger.info("Motion stopped by user")
+                    raise MotionExecutionInterruptedError("Motion stopped by user")
+                elif stop_code == "STOP_CODE_ERROR":
+                    stop_message = response.stop_response.message
+                    logger.error(f"Error in motion stream ({stop_message})")
+                    raise MotionExecutionError(f"Error in motion stream ({stop_message})")
+            elif hasattr(response, "move_response") and response.move_response:
+                move_response = response.move_response
+                current_location_on_trajectory = move_response.current_location_on_trajectory
+                time_until_path_end = move_response.time_to_end
+                logger.debug(
+                    f"Current location on trajectory: {current_location_on_trajectory} | time to path end: {time_until_path_end}"
+                )
+
+
+async def stream_move_async(
+    instance: Instance,
+    cell: str,
+    motion: str,
+    playback_speed: int,
+    response_rate: int,
+    direction: Literal["forward", "backward"] = "forward",
+    io_values: tuple[SetIO, ...] = (),
+) -> None:
+    # connect to API
+    wb_motion_api = wb_api.MotionApi(_get_wb_api_client(instance))
+    logger.debug(f"Connected to Motion API {wb_motion_api.api_client.configuration.host}")
+
+    try:
+        await wb_motion_api.stream_move(
+            cell=cell,
+            client_request_generator=lambda response_stream: _stream_move_generator(
+                response_stream=response_stream,
+                motion=motion,
+                playback_speed=playback_speed,
+                response_rate=response_rate,
+                direction=direction,
+                io_values=io_values,
+            ),
+        )
     except ApiException as e:
         logger.error(f"API Exception: {e}")
         raise MotionExecutionError(f"API Exception: {e}")

@@ -11,9 +11,7 @@ setup_logging(level=logging.INFO)
 
 
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"),
-    user=os.getenv("NOVA_USERNAME"),
-    password=os.getenv("NOVA_PASSWORD"),
+    url=os.getenv("WANDELAPI_BASE_URL"), user=os.getenv("NOVA_USERNAME"), password=os.getenv("NOVA_PASSWORD")
 )
 
 my_robot = MotionGroup(
@@ -24,12 +22,11 @@ my_robot = MotionGroup(
 )
 
 if __name__ == "__main__":
-    
     # Available TCPs on the controller
     print(my_robot.tcps())
-    
+
     # Current joints positions
     print(my_robot.current_joints())
-    
+
     # Current TCP pose
     print(my_robot.current_tcp_pose())

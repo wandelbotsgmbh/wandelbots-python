@@ -19,13 +19,13 @@ class Instance:
                 raise ValueError("User and password are not required for http connections")
         elif "wandelbots.io" in _url:
             _url = "https://" + _url
-        else: # assume http
+        else:  # assume http
             _url = "http://" + _url
         return _url
-            
+
     def _connect(self):
         self.logger.info(f"Connecting to {self.url}")
         # do some connection stuff
-            
+
     def has_auth(self):
         return self.user and self.password

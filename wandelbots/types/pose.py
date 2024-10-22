@@ -13,13 +13,10 @@ from scipy.spatial.transform import Rotation as R
 
 
 class Pose(Pose):
-
     position: Vector3d
     orientation: Vector3d
 
-    __array_priority__ = (
-        1000  # Give Pose higher priority over NumPy arrays (required for __rmul__)
-    )
+    __array_priority__ = 1000  # Give Pose higher priority over NumPy arrays (required for __rmul__)
 
     @field_validator("position", "orientation", mode="before")
     def validate_vector3d(cls, value):
@@ -30,22 +27,20 @@ class Pose(Pose):
             return Vector3d(x=value.x, y=value.y, z=value.z)
         return value
 
-    @staticmethod
-    def from_list(list):
+    @classmethod
+    def from_list(cls, values: list[float]):
         """Create a Pose from a list of 6 elements. Assumes the list is in the order [x, y, z, rx, ry, rz]"""
-        assert len(list) == 6
-        return Pose(
-            position=Vector3d(x=list[0], y=list[1], z=list[2]),
-            orientation=Vector3d(x=list[3], y=list[4], z=list[5]),
+        assert len(values) == 6
+        return cls(
+            position=Vector3d(x=values[0], y=values[1], z=values[2]),
+            orientation=Vector3d(x=values[3], y=values[4], z=values[5]),
         )
 
     def copy(self):
         """Returns a copy of the current pose object."""
         return Pose(
             position=Vector3d(x=self.position.x, y=self.position.y, z=self.position.z),
-            orientation=Vector3d(
-                x=self.orientation.x, y=self.orientation.y, z=self.orientation.z
-            ),
+            orientation=Vector3d(x=self.orientation.x, y=self.orientation.y, z=self.orientation.z),
         )
 
     def as_rotation_matrix(self):
@@ -68,9 +63,7 @@ class Pose(Pose):
         rotation_vec = R.from_matrix(rotation_matrix).as_rotvec()
         return Pose(
             position=Vector3d(x=position[0], y=position[1], z=position[2]),
-            orientation=Vector3d(
-                x=rotation_vec[0], y=rotation_vec[1], z=rotation_vec[2]
-            ),
+            orientation=Vector3d(x=rotation_vec[0], y=rotation_vec[1], z=rotation_vec[2]),
         )
 
     @property
@@ -130,7 +123,12 @@ class Pose(Pose):
 
     def __str__(self):
         # Check if ANSI colors should be disabled (e.g., when running in CI or non-interactive terminal)
-        use_ansi = os.getenv("CI") is None and hasattr(sys.stdout, 'fileno') and callable(sys.stdout.fileno) and os.isatty(sys.stdout.fileno())
+        use_ansi = (
+            os.getenv("CI") is None
+            and hasattr(sys.stdout, "fileno")
+            and callable(sys.stdout.fileno)
+            and os.isatty(sys.stdout.fileno())
+        )
 
         # ANSI escape codes for colors and bold formatting
         bold_start = "\033[1m" if use_ansi else ""

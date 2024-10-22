@@ -14,9 +14,7 @@ setup_logging(level=logging.INFO)
 
 
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"),
-    user=os.getenv("NOVA_USERNAME"),
-    password=os.getenv("NOVA_PASSWORD"),
+    url=os.getenv("WANDELAPI_BASE_URL"), user=os.getenv("NOVA_USERNAME"), password=os.getenv("NOVA_PASSWORD")
 )
 
 my_robot = MotionGroup(
@@ -27,16 +25,8 @@ my_robot = MotionGroup(
 )
 
 if __name__ == "__main__":
-
     # Define a home position
-    home_joints = [
-        0,
-        -np.pi / 2,
-        -np.pi / 2,
-        -np.pi / 2,
-        np.pi / 2,
-        0,
-    ]  # [0, -90, -90, -90, 90, 0]
+    home_joints = [0, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0]  # [0, -90, -90, -90, 90, 0]
 
     # Get current TCP pose and offset it slightly along the x-axis
     current_pose: Pose = my_robot.current_tcp_pose()
@@ -44,18 +34,11 @@ if __name__ == "__main__":
 
     # Plan a motion home -> target_pose -> home
     planner = Planner(motion_group=my_robot)
-    trajectory = [
-        planner.jptp(joints=home_joints),
-        planner.cptp(pose=target_pose),
-        planner.jptp(joints=home_joints),
-    ]
+    trajectory = [planner.jptp(target=home_joints), planner.cptp(target=target_pose), planner.jptp(target=home_joints)]
 
     # Try to plan the desired trajectory
     try:
-        plan_result = planner.plan(
-            trajectory=trajectory,
-            start_joints=my_robot.current_joints(),
-        )
+        plan_result, _ = planner.plan(trajectory=trajectory, start_joints=my_robot.current_joints())
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")
         exit()
