@@ -8,7 +8,9 @@ logger = _get_logger(__name__)
 _get_base_url = lambda url, cell: f"{url}/api/v1/cells/{cell}/controllers"
 
 
-def set_values(instance: Instance, cell: str, controller: str, values: list[dict]) -> None:
+def set_values(
+    instance: Instance, cell: str, controller: str, values: list[dict]
+) -> None:
     url = f"{_get_base_url(instance.url, cell)}/{controller}/ios/values"
     code, _ = put(url, data=values, instance=instance)
     if code != 200:
@@ -17,7 +19,9 @@ def set_values(instance: Instance, cell: str, controller: str, values: list[dict
         logger.debug(f"Successfully set values for controller {controller}: {values}")
 
 
-def get_values(instance: Instance, cell: str, controller: str, ios: list[str]) -> list[IOValue]:
+def get_values(
+    instance: Instance, cell: str, controller: str, ios: list[str]
+) -> list[IOValue]:
     url = f"{_get_base_url(instance.url, cell)}/{controller}/ios/values?ios={'&ios='.join(ios)}"
     code, response = get(url, instance=instance)
     if code != 200:

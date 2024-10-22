@@ -29,9 +29,14 @@ class Planner:
     def _from_default_tcp(self, tcp: str) -> str:
         return tcp or self.default_tcp
 
-    def _create_plan_request(self, tcp: str, commands: list[Command], start_joints: list[float]) -> PlanRequest:
+    def _create_plan_request(
+        self, tcp: str, commands: list[Command], start_joints: list[float]
+    ) -> PlanRequest:
         return PlanRequest(
-            motion_group=self.motion_group, start_joint_position=Joints(joints=start_joints), commands=commands, tcp=tcp
+            motion_group=self.motion_group,
+            start_joint_position=Joints(joints=start_joints),
+            commands=commands,
+            tcp=tcp,
         )
 
     def _handle_plan_response(self, response: PlanResponse) -> PlanSuccessfulResponse:
@@ -40,22 +45,30 @@ class Planner:
             self.logger.info(f"Plan successful, Motion ID: {success.motion}")
             return success
 
-        error_response = response.plan_failed_on_trajectory_response or response.plan_failed_response
+        error_response = (
+            response.plan_failed_on_trajectory_response or response.plan_failed_response
+        )
         if error_response:
             self.logger.warning(f"Plan failed: {error_response.description}")
 
             if isinstance(error_response, PlanFailedOnTrajectoryResponse):
-                raise PlanningPartialSuccessWarning(message=error_response.description, motion=error_response.motion)
+                raise PlanningPartialSuccessWarning(
+                    message=error_response.description, motion=error_response.motion
+                )
             raise PlanningFailedException(f"Plan failed: {error_response.description}")
         self.logger.error("Plan failed with an unknown error")
         raise PlanningFailedException("Plan failed with unknown error")
 
     def _plan_with_rae(self, plan_request: PlanRequest) -> PlanSuccessfulResponse:
-        response = motion_api.plan_motion(instance=self.instance, cell=self.cell, plan_request=plan_request)
+        response = motion_api.plan_motion(
+            instance=self.instance, cell=self.cell, plan_request=plan_request
+        )
         return self._handle_plan_response(response)
 
     @staticmethod
-    def _resolve_commands(trajectory: list[Union[Command, IOValue]]) -> tuple[list[Command], list[SetIO]]:
+    def _resolve_commands(
+        trajectory: list[Union[Command, IOValue]]
+    ) -> tuple[list[Command], list[SetIO]]:
         """Split-up input trajectory into move commands and io actions."""
 
         path_param = 0
@@ -71,15 +84,21 @@ class Planner:
 
         return move_trajectory, ios
 
-    async def _plan_with_rae_async(self, plan_request: PlanRequest) -> PlanSuccessfulResponse:
-        response = await motion_api.plan_motion_async(instance=self.instance, cell=self.cell, plan_request=plan_request)
+    async def _plan_with_rae_async(
+        self, plan_request: PlanRequest
+    ) -> PlanSuccessfulResponse:
+        response = await motion_api.plan_motion_async(
+            instance=self.instance, cell=self.cell, plan_request=plan_request
+        )
         return self._handle_plan_response(response)
 
     def line(self, target: Pose, settings: CommandSettings = None) -> Command:
         return Command(line=target, settings=settings)
 
     def arc(self, via: Pose, target: Pose, settings: CommandSettings = None) -> Command:
-        return Command(circle=Circle(via_pose=via, target_pose=target), settings=settings)
+        return Command(
+            circle=Circle(via_pose=via, target_pose=target), settings=settings
+        )
 
     def jptp(self, target: Joints, settings: CommandSettings = None) -> Command:
         return Command(joint_ptp=Joints(joints=target), settings=settings)
@@ -91,7 +110,10 @@ class Planner:
         return IOValue.from_key_value(key, value)
 
     def plan(
-        self, trajectory: list[Union[Command, IOValue]], start_joints: list[float], tcp: str = None
+        self,
+        trajectory: list[Union[Command, IOValue]],
+        start_joints: list[float],
+        tcp: str = None,
     ) -> tuple[PlanSuccessfulResponse, list[SetIO]]:
         tcp = self._from_default_tcp(tcp)
         move_commands, io_actions = self._resolve_commands(trajectory)

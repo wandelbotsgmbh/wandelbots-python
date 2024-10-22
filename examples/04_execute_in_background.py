@@ -18,7 +18,9 @@ setup_logging(level=logging.INFO)
 
 
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"), user=os.getenv("NOVA_USERNAME"), password=os.getenv("NOVA_PASSWORD")
+    url=os.getenv("WANDELAPI_BASE_URL"),
+    user=os.getenv("NOVA_USERNAME"),
+    password=os.getenv("NOVA_PASSWORD"),
 )
 
 my_robot = MotionGroup(
@@ -40,7 +42,9 @@ async def main():
 
     # Try to plan the desired trajectory asynchronously
     try:
-        plan_result, _ = await planner.plan_async(trajectory=trajectory, start_joints=my_robot.current_joints())
+        plan_result, _ = await planner.plan_async(
+            trajectory=trajectory, start_joints=my_robot.current_joints()
+        )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")
         exit()
@@ -52,7 +56,9 @@ async def main():
             async for state in my_robot.execute_motion_stream_async(motion, speed):
                 time_until_complete = state.time_to_end
                 print(f"Motion done in: {time_until_complete/1000} s")
-        except MotionExecutionInterruptedError:  # This has to be in here to catch motion interruptions by the user
+        except (
+            MotionExecutionInterruptedError
+        ):  # This has to be in here to catch motion interruptions by the user
             pass
         except Exception as e:
             print(f"An error occurred during execution: {e}")

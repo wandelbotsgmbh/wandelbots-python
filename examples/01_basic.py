@@ -11,7 +11,9 @@ setup_logging(level=logging.INFO)
 
 
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"), user=os.getenv("NOVA_USERNAME"), password=os.getenv("NOVA_PASSWORD")
+    url=os.getenv("WANDELAPI_BASE_URL"),
+    user=os.getenv("NOVA_USERNAME"),
+    password=os.getenv("NOVA_PASSWORD"),
 )
 
 my_robot = MotionGroup(

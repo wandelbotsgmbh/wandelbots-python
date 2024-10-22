@@ -11,7 +11,9 @@ async def test_motion_planning_and_execution():
     """Test planning and executing a motion against the actual motion-group backend."""
 
     instance = Instance(
-        url=os.getenv("WANDELAPI_BASE_URL"), user=os.getenv("NOVA_USERNAME"), password=os.getenv("NOVA_PASSWORD")
+        url=os.getenv("WANDELAPI_BASE_URL"),
+        user=os.getenv("NOVA_USERNAME"),
+        password=os.getenv("NOVA_PASSWORD"),
     )
 
     motion_group = MotionGroup(
@@ -28,8 +30,14 @@ async def test_motion_planning_and_execution():
 
     # Translate current TCP pose and plan a motion
     current_pose.translate(vector=v(x=0, y=0, z=-500))
-    trajectory = [planner.jptp(joints=home), planner.line(pose=current_pose), planner.jptp(joints=home)]
-    plan_result = planner.plan(start_joints=motion_group.current_joints(), trajectory=trajectory)
+    trajectory = [
+        planner.jptp(joints=home),
+        planner.line(pose=current_pose),
+        planner.jptp(joints=home),
+    ]
+    plan_result = planner.plan(
+        start_joints=motion_group.current_joints(), trajectory=trajectory
+    )
 
     # Check if the motion plan was successful
     assert plan_result.motion is not None, "Failed to plan motion"
@@ -37,7 +45,9 @@ async def test_motion_planning_and_execution():
     # Execute planned motion
     async def execute_in_background(motion: str, speed: int):
         try:
-            async for move_response in motion_group.execute_motion_stream_async(motion, speed):
+            async for move_response in motion_group.execute_motion_stream_async(
+                motion, speed
+            ):
                 print(move_response)
         except MotionExecutionInterruptedError:
             print("Motion execution was interrupted")
@@ -50,4 +60,6 @@ async def test_motion_planning_and_execution():
     await asyncio.sleep(2)
     motion_group.stop()
     await motion_task
-    assert not motion_group.is_executing(), "Motion-group should not be executing motion after stop command"
+    assert (
+        not motion_group.is_executing()
+    ), "Motion-group should not be executing motion after stop command"

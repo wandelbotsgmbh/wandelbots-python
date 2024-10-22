@@ -33,4 +33,6 @@ def deactivate_motion_group(instance: Instance, cell: str, motion_group: str):
     logger.debug(f"Deactivating motion group {motion_group} for cell {cell} on: {url}")
     code = delete(url, instance=instance)
     if code != 200:
-        logger.error(f"Failed to deactivate motion group {motion_group} for cell {cell}")
+        logger.error(
+            f"Failed to deactivate motion group {motion_group} for cell {cell}"
+        )

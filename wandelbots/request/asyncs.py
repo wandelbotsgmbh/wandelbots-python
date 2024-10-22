@@ -18,7 +18,9 @@ def _handle_request_error(err):
         if err.response.status_code == 401:
             __logger.error("401 Unauthorized access. Check your credentials.")
         else:
-            __logger.error(f"HTTP error occurred: {err} - Response content: {err.response.text}")
+            __logger.error(
+                f"HTTP error occurred: {err} - Response content: {err.response.text}"
+            )
     elif isinstance(err, httpx.ConnectTimeout):
         __logger.error(f"Connection timeout error occurred: {err}")
     elif isinstance(err, httpx.RequestError):
@@ -47,7 +49,9 @@ async def delete(url: str, instance: Instance) -> int:
         return 500
 
 
-async def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
+async def post(
+    url: str, instance: Instance, data: Dict = {}
+) -> Tuple[int, Optional[Dict]]:
     async with httpx.AsyncClient(auth=_get_auth(instance)) as client:
         try:
             response = await client.post(url, json=data, timeout=TIMEOUT)
@@ -58,7 +62,9 @@ async def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Opti
         return 500, None
 
 
-async def put(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
+async def put(
+    url: str, instance: Instance, data: Dict = {}
+) -> Tuple[int, Optional[Dict]]:
     async with httpx.AsyncClient(auth=_get_auth(instance)) as client:
         try:
             response = await client.put(url, json=data, timeout=TIMEOUT)
