@@ -6,4 +6,4 @@ def instance():
     return Instance()
 
 def test_check_test_on_ipc(instance):
-    assert instance.url == "http://api-gateway:8080"
+    assert instance.url == "http://api-gateway.wandelbots.svc.cluster.local:8080"
