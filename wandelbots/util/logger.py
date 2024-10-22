@@ -1,6 +1,6 @@
 import logging
 
-# TODO: Adjust to current package name
+# TODO: Change this whenever the package name changes
 _ROOT_LOGGER_NAME = "wandelbots"
 
 
