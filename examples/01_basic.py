@@ -24,12 +24,12 @@ my_robot = MotionGroup(
 )
 
 if __name__ == "__main__":
-    
+
     # Available TCPs on the controller
     print(my_robot.tcps())
-    
+
     # Current joints positions
     print(my_robot.current_joints())
-    
+
     # Current TCP pose
     print(my_robot.current_tcp_pose())

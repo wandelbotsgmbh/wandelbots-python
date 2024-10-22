@@ -7,4 +7,3 @@ from wandelbots_api_client.models import *
 # for different purposes, like adding methods or properties
 from .vector3d import Vector3d
 from .pose import Pose
-

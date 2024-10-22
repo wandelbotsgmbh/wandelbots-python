@@ -11,7 +11,7 @@ async def test_motion_group_initialization():
         user=os.getenv("NOVA_USERNAME"),
         password=os.getenv("NOVA_PASSWORD"),
     )
-    
+
     motion_group = MotionGroup(
         instance=instance,
         cell=os.getenv("CELL_ID"),

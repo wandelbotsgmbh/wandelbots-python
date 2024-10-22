@@ -1,15 +1,19 @@
 from wandelbots.core.instance import Instance
 from wandelbots.request.syncs import get
 from wandelbots.util.logger import _get_logger
-from wandelbots.types import RobotTcps, MotionGroupState, MotionGroupStateResponse, Pose, TcpPose
+from wandelbots.types import (
+    RobotTcps,
+    MotionGroupState,
+    MotionGroupStateResponse,
+    Pose,
+    TcpPose,
+)
 
 from typing import Optional
 
 logger = _get_logger(__name__)
 
-_get_base_url = (
-    lambda url, cell: f"{url}/api/v1/cells/{cell}/motion-groups"
-)
+_get_base_url = lambda url, cell: f"{url}/api/v1/cells/{cell}/motion-groups"
 
 
 def get_tcps(instance: Instance, cell: str, motion_group: str) -> list[str]:
@@ -27,7 +31,9 @@ def get_tcps(instance: Instance, cell: str, motion_group: str) -> list[str]:
     return [tcp.id for tcp in tcps]
 
 
-def get_current_joint_config(instance: Instance, cell: str, motion_group: str) -> list[float]:
+def get_current_joint_config(
+    instance: Instance, cell: str, motion_group: str
+) -> list[float]:
     url = f"{_get_base_url(instance.url, cell)}/{motion_group}/state"
     logger.debug(
         f"Getting current joint config for cell {cell} and motion group {motion_group} on: {url}"
@@ -44,7 +50,9 @@ def get_current_joint_config(instance: Instance, cell: str, motion_group: str) -
     return motion_group_state.joint_position.joints
 
 
-def get_current_tcp_pose(instance: Instance, cell: str, motion_group: str, tcp: str) -> Optional[Pose]:
+def get_current_tcp_pose(
+    instance: Instance, cell: str, motion_group: str, tcp: str
+) -> Optional[Pose]:
     url = f"{_get_base_url(instance.url, cell)}/{motion_group}/state?tcp={tcp}"
     logger.debug(
         f"Getting current tcp pose for cell {cell} and motion group {motion_group} and tcp {tcp} on: {url}"
