@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.4.0 (2024-10-22)
+
+### Features
+
+* feat: add black to pipeline ([`f0a5ee6`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/f0a5ee64d80e60de911265f8464c8e4f2da6a312))
+
+* feat: apply black code formatting ([`970b9b8`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/970b9b8ddae7667240af1efc0ff2dc84600c3f33))
+
+### Unknown
+
+* Merge pull request #8 from wandelbotsgmbh/feature/black-formatting
+
+feat: apply black code formatting ([`49e14aa`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/49e14aadc3f2445be0aaa8cf1060fde36269a618))
+
+
 ## v0.3.5 (2024-10-22)
 
 ### Fixes
