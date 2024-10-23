@@ -7,7 +7,6 @@
 
 # Development
 experiments/
-.vscode/
 envs
 
 .ipynb_checkpoints
