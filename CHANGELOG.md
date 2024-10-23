@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.4.1 (2024-10-23)
+
+### Fixes
+
+* fix: fetch values from api ([`202b976`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/202b976313cbd862f8fc31a4b6a9857762bc4c54))
+
+### Unknown
+
+* Merge pull request #10 from wandelbotsgmbh/feature/update-jupyter
+
+fix: fetch values from api ([`4f77fc7`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4f77fc7e2c447aa87f7fe26f3976d1ec85b4620d))
+
+
 ## v0.4.0 (2024-10-22)
 
 ### Features
