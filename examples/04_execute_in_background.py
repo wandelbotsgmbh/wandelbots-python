@@ -56,9 +56,7 @@ async def main():
             async for state in my_robot.execute_motion_stream_async(motion, speed):
                 time_until_complete = state.time_to_end
                 print(f"Motion done in: {time_until_complete/1000} s")
-        except (
-            MotionExecutionInterruptedError
-        ):  # This has to be in here to catch motion interruptions by the user
+        except MotionExecutionInterruptedError:  # This has to be in here to catch motion interruptions by the user
             pass
         except Exception as e:
             print(f"An error occurred during execution: {e}")
