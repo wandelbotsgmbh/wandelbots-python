@@ -1,6 +1,6 @@
 from typing import Union
 
-from wandelbots.types import IOValue
+from wandelbots_api_client.models import IOValue
 
 IOType = Union[bool, int, float, str]
 

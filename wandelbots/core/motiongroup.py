@@ -2,7 +2,7 @@ import asyncio
 
 from typing import AsyncGenerator, Literal, Callable
 from contextlib import asynccontextmanager
-from wandelbots.types import MoveResponse, Pose, SetIO
+from wandelbots.types import MoveResponse, Pose, SetIO, IOValue
 
 from wandelbots.util.logger import _get_logger
 from wandelbots.core.instance import Instance
@@ -185,16 +185,18 @@ class MotionGroup:
                     and remaining_io_actions[-1].location <= location
                 ):
                     io_action = remaining_io_actions.pop()
-                    controller_io_api.set_values(
-                        self.instance,
-                        self.cell,
-                        self.controller,
-                        [io_action.io.as_dict()],
-                    )
+                    self.set_ios([io_action.io])
                     self.logger.info(
                         f"Setting IO {io_action.io.key} to {io_action.io.value} at {location=}"
                     )
                 yield response
+
+            # Set all remaining IOs after the motion has finished
+            for io_action in remaining_io_actions:
+                self.set_ios([io_action.io])
+                self.logger.info(
+                    f"Setting IO {io_action.io.key} to {io_action.io.value} at end of motion."
+                )
 
     async def execute_motion_async(
         self,
@@ -243,5 +245,16 @@ class MotionGroup:
     def is_executing(self) -> bool:
         return self.current_motion_in_execution is not None
 
-    def set_ios(self, values: list[dict]) -> None:
+    def set_ios(self, values: list[IOValue]) -> None:
         controller_io_api.set_values(self.instance, self.cell, self.controller, values)
+
+    def get_ios(self, ios: list[str]) -> list[IOValue]:
+        return controller_io_api.get_values(
+            self.instance, self.cell, self.controller, ios
+        )
+
+    def set_io(self, value: IOValue) -> None:
+        self.set_ios([value])
+
+    def get_io(self, key: str) -> IOValue:
+        return self.get_ios([key])[0]

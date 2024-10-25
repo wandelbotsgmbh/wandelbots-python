@@ -41,7 +41,7 @@ async def main():
 
     # Try to plan the desired trajectory asynchronously
     try:
-        plan_result = await planner.plan_async(
+        plan_result, io_actions = await planner.plan_async(
             trajectory=trajectory,
             start_joints=my_robot.current_joints(),
         )
@@ -51,7 +51,7 @@ async def main():
 
     # Execute the motion asynchronously without yielding current execution state
     motion = plan_result.motion
-    await my_robot.execute_motion_async(motion=motion, speed=10)
+    await my_robot.execute_motion_async(motion=motion, speed=10, io_actions=io_actions)
 
     # A motion can also be executed leveraging a bi-directional approach,
     # thus yielding the current execution state.

@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
     # Try to plan the desired trajectory
     try:
-        plan_result = planner.plan(
+        plan_result, _ = planner.plan(
             trajectory=trajectory,
             start_joints=my_robot.current_joints(),
         )

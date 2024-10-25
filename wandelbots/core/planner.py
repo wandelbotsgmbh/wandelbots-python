@@ -86,7 +86,7 @@ class Planner:
     def cptp(self, pose: Pose, settings: CommandSettings = None) -> Command:
         return Command(cartesian_ptp=pose, settings=settings)
 
-    def set_io(self, key: str, value: Any) -> IOValue:
+    def set_io(self, key: str, value: IOType) -> IOValue:
         return IOValue.from_key_value(key=key, value=value)
 
     def plan(
@@ -94,7 +94,7 @@ class Planner:
         trajectory: list[Union[Command, IOValue]],
         start_joints: list[float],
         tcp: str = None,
-    ) -> tuple[PlanSuccessfulResponse, list[SetIO]]:
+    ) -> tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]:
         tcp = self._from_default_tcp(tcp)
         move_commands, io_actions = self._resolve_commands(trajectory)
         rae_plan_request = self._create_plan_request(tcp, move_commands, start_joints)
@@ -105,7 +105,7 @@ class Planner:
         trajectory: list[CommandType],
         start_joints: list[float],
         tcp: str = None,
-    ) -> tuple[PlanSuccessfulResponse, list[SetIO]]:
+    ) -> tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]:
         tcp = self._from_default_tcp(tcp)
         move_commands, io_actions = self._resolve_commands(trajectory)
         rae_plan_request = self._create_plan_request(tcp, move_commands, start_joints)
@@ -114,7 +114,7 @@ class Planner:
     @staticmethod
     def _resolve_commands(
         trajectory: list[CommandType],
-    ) -> tuple[list[Command], list[SetIO]]:
+    ) -> tuple[list[Command], tuple[SetIO, ...]]:
         """Split-up input trajectory into move commands and io actions."""
 
         path_param = 0
@@ -128,4 +128,4 @@ class Planner:
                 move_trajectory.append(command)
                 path_param += 1
 
-        return move_trajectory, io_actions
+        return move_trajectory, tuple(io_actions)

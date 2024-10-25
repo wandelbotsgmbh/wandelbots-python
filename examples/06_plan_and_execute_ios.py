@@ -6,15 +6,14 @@ from dotenv import load_dotenv
 
 from wandelbots import Instance, MotionGroup, Planner
 from wandelbots.types import Pose, Vector3d
-from wandelbots.exceptions import (
-    PlanningFailedException,
-    PlanningPartialSuccessWarning,
-    MotionExecutionInterruptedError,
-)
+from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
 from wandelbots.util.logger import setup_logging
 
 load_dotenv()  # Load environment variables from .env
 setup_logging(level=logging.INFO)
+
+
+DEFAULT_IO = "digital_out[0]"
 
 
 my_instance = Instance(
@@ -35,12 +34,20 @@ async def main():
 
     # Get current TCP pose and offset it slightly along the z-axis
     current_pose: Pose = my_robot.current_tcp_pose()
-    target_pose = current_pose.translate(Vector3d(z=100))
+    target_pose = current_pose * Pose.from_list([0, 0, 100, 0, 0, 0])
 
     # Plan a line motion to the target pose
     planner = Planner(motion_group=my_robot)
     trajectory = [
+        planner.set_io(key=DEFAULT_IO, value=True),
         planner.line(pose=target_pose),
+        planner.set_io(key=DEFAULT_IO, value=False),
+        planner.line(pose=current_pose),
+        planner.set_io(key=DEFAULT_IO, value=True),
+        planner.line(pose=target_pose),
+        planner.set_io(key=DEFAULT_IO, value=False),
+        planner.line(pose=current_pose),
+        planner.set_io(key=DEFAULT_IO, value=True),
     ]
 
     # Try to plan the desired trajectory asynchronously
@@ -53,30 +60,11 @@ async def main():
         print(f"Planning failed: {e}")
         exit()
 
-    # Now we can execute a motion in the background in a non-blocking way,
-    # by defining a function that will be executed as a task
-    async def execute_in_background(motion: str, speed: int):
-        try:
-            async for state in my_robot.execute_motion_stream_async(
-                motion, speed, io_actions=io_actions
-            ):
-                time_until_complete = state.time_to_end
-                print(f"Motion done in: {time_until_complete/1000} s")
-        except MotionExecutionInterruptedError:  # This has to be in here to catch motion interruptions by the user
-            pass
-        except Exception as e:
-            print(f"An error occurred during execution: {e}")
-
-    # Create a task that will execute the motion in the background
-    motion_task = asyncio.create_task(execute_in_background(plan_result.motion, 5))
-
-    # Pretend to some other work
-    await asyncio.sleep(2)
-
-    # Stop the motion and check that it is no longer executing
-    my_robot.stop()
-    await motion_task
-    print(f"Robot is executing motion: {my_robot.is_executing()}")
+    # Execute the motion asynchronously without yielding current execution state
+    motion = plan_result.motion
+    print(f"Before execution {my_robot.get_io(DEFAULT_IO)=}")
+    await my_robot.execute_motion_async(motion=motion, speed=10, io_actions=io_actions)
+    print(f"After execution {my_robot.get_io(DEFAULT_IO)=}")
 
 
 if __name__ == "__main__":
