@@ -5,12 +5,9 @@ class Instance:
     def __init__(
         self,
         url="http://api-gateway.wandelbots.svc.cluster.local:8080",
-        user=None,
-        password=None,
+        api_token=None,
     ):
         self._api_version = "v1"
-        self.user = user
-        self.password = password
         self.url = self._parse_url(url)
         self.logger = _get_logger(__name__)
 
@@ -18,10 +15,10 @@ class Instance:
         """remove any trailing slashes and validate scheme"""
         _url = host.rstrip("/")
         if _url.startswith("https"):
-            if not self.user or not self.password:
+            if not self.api_token:
                 raise ValueError("User and password are required for https connections")
         elif _url.startswith("http"):
-            if self.user or self.password:
+            if self.api_token:
                 raise ValueError(
                     "User and password are not required for http connections"
                 )
@@ -38,7 +35,7 @@ class Instance:
             return f"{_uri}/api/{self._api_version}"
         else:
             _url_no_scheme = self.url.split("://")[1]
-            _uri = f"wss://{self.user}:{self.password}@{_url_no_scheme}"
+            _uri = f"wss://{_url_no_scheme}"
             return f"{_uri}/api/{self._api_version}"
 
     def _connect(self):
