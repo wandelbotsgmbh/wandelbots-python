@@ -36,6 +36,9 @@ jobs:
       - name: Run ruff for linting
         run: poetry run ruff check .
 
+      - name: Check notebooks with nbqa and ruff
+        run: poetry run nbqa ruff .
+
       - name: Run tests
         run: |
           cp envs/.env.tests envs/test_.env.tests
