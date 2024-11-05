@@ -1,24 +1,24 @@
 import asyncio
-import wandelbots_api_client as wb_api
 import json
+from typing import AsyncGenerator, Callable, Literal
 
-from websockets.sync.client import connect
-from websockets.exceptions import ConnectionClosedError
-from typing import AsyncGenerator, Literal, Callable
-
+import wandelbots_api_client as wb_api
 from wandelbots_api_client.rest import ApiException
+from websockets.exceptions import ConnectionClosedError
+from websockets.sync.client import connect
+
 from wandelbots.core.instance import Instance
-from wandelbots.request.syncs import get, delete, post, put
+from wandelbots.exceptions import MotionExecutionError, MotionExecutionInterruptedError
 from wandelbots.request.asyncs import post as async_post
-from wandelbots.util.logger import _get_logger
+from wandelbots.request.syncs import delete, get, post, put
 from wandelbots.types import (
     MotionIdsListResponse,
+    MoveResponse,
     PlanRequest,
     PlanResponse,
-    MoveResponse,
     StreamMoveResponse,
 )
-from wandelbots.exceptions import MotionExecutionError, MotionExecutionInterruptedError
+from wandelbots.util.logger import _get_logger
 
 logger = _get_logger(__name__)
 
@@ -59,7 +59,7 @@ def plan_motion(instance: Instance, cell: str, plan_request: PlanRequest) -> boo
     logger.debug(f"Planning motion for cell {cell} on: {url}")
     code, response = post(url, data=plan_request.model_dump(), instance=instance)
     if code != 200:
-        logger.error(f"Failed to plan motion")
+        logger.error("Failed to plan motion")
         return None
     return PlanResponse.from_dict(response)
 
@@ -69,7 +69,7 @@ async def plan_motion_async(instance: Instance, cell: str, plan_request: PlanReq
     logger.debug(f"Async planning motion for cell {cell} on: {url}")
     code, response = await async_post(url, data=plan_request.model_dump(), instance=instance)
     if code != 200:
-        logger.error(f"Failed to plan motion")
+        logger.error("Failed to plan motion")
         return None
     return PlanResponse.from_dict(response)
 
