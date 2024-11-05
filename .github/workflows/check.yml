@@ -33,7 +33,7 @@ jobs:
       - name: Check formatting with ruff
         run: poetry run ruff format --check .
 
-      - name: Run ruff for linting
+      - name: Check ruff for linting
         run: poetry run ruff check .
 
       - name: Check notebooks with nbqa and ruff
