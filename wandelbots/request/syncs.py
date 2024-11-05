@@ -7,11 +7,9 @@ from wandelbots.core.instance import Instance
 __logger = _get_logger(__name__)
 
 
-def _get_auth(instance: Instance) -> Optional[requests.auth.HTTPBasicAuth]:
+def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
     if instance.has_auth():
-        return requests.auth.HTTPBasicAuth(
-            username=instance.user, password=instance.password
-        )
+        return {"Authorization": f"Bearer {instance.api_token}"}
     return None
 
 
@@ -33,7 +31,7 @@ def _handle_request_error(err):
 
 def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
     try:
-        response = requests.get(url, timeout=TIMEOUT, auth=_get_auth(instance))
+        response = requests.get(url, timeout=TIMEOUT, headers=_get_auth_header(instance))
         response.raise_for_status()
         return response.status_code, response.json()
     except requests.RequestException as err:
@@ -43,7 +41,7 @@ def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
 
 def delete(url: str, instance: Instance) -> int:
     try:
-        response = requests.delete(url, timeout=TIMEOUT, auth=_get_auth(instance))
+        response = requests.delete(url, timeout=TIMEOUT, headers=_get_auth_header(instance))
         response.raise_for_status()
         return response.status_code
     except requests.RequestException as err:
@@ -54,7 +52,7 @@ def delete(url: str, instance: Instance) -> int:
 def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     try:
         response = requests.post(
-            url, json=data, timeout=TIMEOUT, auth=_get_auth(instance)
+            url, json=data, timeout=TIMEOUT, headers=_get_auth_header(instance)
         )
         response.raise_for_status()
         return response.status_code, response.json()
@@ -66,7 +64,7 @@ def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[D
 def put(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     try:
         response = requests.put(
-            url, json=data, timeout=TIMEOUT, auth=_get_auth(instance)
+            url, json=data, timeout=TIMEOUT, headers=_get_auth_header(instance)
         )
         response.raise_for_status()
         return response.status_code, response.json()

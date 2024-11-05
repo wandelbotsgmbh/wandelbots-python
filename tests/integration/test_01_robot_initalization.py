@@ -8,8 +8,7 @@ async def test_motion_group_initialization():
     """Test motion-group initialization and retrieve basic state from the actual backend."""
     instance = Instance(
         url=os.getenv("WANDELAPI_BASE_URL"),
-        user=os.getenv("NOVA_USERNAME"),
-        password=os.getenv("NOVA_PASSWORD"),
+        api_token=os.getenv("NOVA_TOKEN"),
     )
 
     motion_group = MotionGroup(

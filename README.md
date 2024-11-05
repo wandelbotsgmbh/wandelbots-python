@@ -112,3 +112,16 @@ For further examples take a look at the [examples](https://github.com/wandelbots
 ```bash
 $ poetry run pytest -rs -v
 ```
+
+#### integration tests
+
+By default integration tests will be skipped. 
+To run them localy create an env file at `envs/.env.tests` with your values.
+
+```txt
+WANDELAPI_BASE_URL=
+NOVA_TOKEN=
+CELL_ID=
+MOTION_GROUP=
+TCP=
+```

@@ -2,6 +2,7 @@ import pytest
 import requests
 import os
 from dotenv import load_dotenv, find_dotenv
+import requests.auth
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -18,13 +19,17 @@ def check_test_motion_group_available(request):
 
     # General availability check
     try:
-        if not os.getenv("NOVA_USERNAME") or not os.getenv("NOVA_PASSWORD"):
-            auth = None
+        if not os.getenv("NOVA_TOKEN"):
+            headers = None
         else:
-            auth = requests.auth.HTTPBasicAuth(
-                os.getenv("NOVA_USERNAME"), os.getenv("NOVA_PASSWORD")
-            )
-        response = requests.get(nova_host, timeout=5, auth=auth)
+            token = os.getenv("NOVA_TOKEN")
+            if not token:
+                pytest.fail("NOVA_TOKEN not set in the environment.")
+
+            headers = {
+                "Authorization": f"Bearer {token}"
+            }
+        response = requests.get(nova_host, timeout=5, headers=headers)
         response.raise_for_status()
     except requests.RequestException as e:
         skip_reason = f"Skipping tests: Backend service is not available at {nova_host}. Error: {e}"
@@ -44,7 +49,7 @@ def check_test_motion_group_available(request):
         f"{nova_host}/api/v1/cells/{cell}/motion-groups/{motion_group}/state?tcp={tcp}"
     )
     try:
-        response = requests.get(endpoint_url, timeout=5, auth=auth)
+        response = requests.get(endpoint_url, timeout=5, headers=headers)
         response.raise_for_status()
     except requests.HTTPError as e:
         try:

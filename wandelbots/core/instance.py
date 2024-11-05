@@ -8,6 +8,7 @@ class Instance:
         api_token=None,
     ):
         self._api_version = "v1"
+        self.api_token = api_token
         self.url = self._parse_url(url)
         self.logger = _get_logger(__name__)
 
@@ -43,4 +44,4 @@ class Instance:
         # do some connection stuff
 
     def has_auth(self):
-        return self.user and self.password
+        return self.api_token

@@ -7,9 +7,9 @@ from wandelbots.core.instance import Instance
 __logger = _get_logger(__name__)
 
 
-def _get_auth(instance: Instance) -> Optional[httpx.BasicAuth]:
+def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
     if instance.has_auth():
-        return httpx.BasicAuth(username=instance.user, password=instance.password)
+        return {"Authorization": f"Bearer {instance.api_token}"}
     return None
 
 
@@ -28,7 +28,7 @@ def _handle_request_error(err):
 
 
 async def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
-    async with httpx.AsyncClient(auth=_get_auth(instance)) as client:
+    async with httpx.AsyncClient(headers=_get_auth_header(instance)) as client:
         try:
             response = await client.get(url, timeout=TIMEOUT)
             response.raise_for_status()
@@ -39,7 +39,7 @@ async def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
 
 
 async def delete(url: str, instance: Instance) -> int:
-    async with httpx.AsyncClient(auth=_get_auth(instance)) as client:
+    async with httpx.AsyncClient(headers=_get_auth_header(instance)) as client:
         try:
             response = await client.delete(url, timeout=TIMEOUT)
             response.raise_for_status()
@@ -52,7 +52,7 @@ async def delete(url: str, instance: Instance) -> int:
 async def post(
     url: str, instance: Instance, data: Dict = {}
 ) -> Tuple[int, Optional[Dict]]:
-    async with httpx.AsyncClient(auth=_get_auth(instance)) as client:
+    async with httpx.AsyncClient(headers=_get_auth_header(instance)) as client:
         try:
             response = await client.post(url, json=data, timeout=TIMEOUT)
             response.raise_for_status()
@@ -65,7 +65,7 @@ async def post(
 async def put(
     url: str, instance: Instance, data: Dict = {}
 ) -> Tuple[int, Optional[Dict]]:
-    async with httpx.AsyncClient(auth=_get_auth(instance)) as client:
+    async with httpx.AsyncClient(headers=_get_auth_header(instance)) as client:
         try:
             response = await client.put(url, json=data, timeout=TIMEOUT)
             response.raise_for_status()
