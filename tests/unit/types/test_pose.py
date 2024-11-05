@@ -1,7 +1,8 @@
-import pytest
 import numpy as np
-from wandelbots.types import Vector3d, Pose
+import pytest
 from scipy.spatial.transform import Rotation as R
+
+from wandelbots.types import Pose, Vector3d
 
 
 @pytest.fixture
@@ -25,14 +26,7 @@ def identity_matrix():
 
 @pytest.fixture
 def combined_matrix():
-    return np.array(
-        [
-            [-1, 0, 0, 1],
-            [0, -1, 0, 2],
-            [0, 0, 1, 3],
-            [0, 0, 0, 1],
-        ]
-    )
+    return np.array([[-1, 0, 0, 1], [0, -1, 0, 2], [0, 0, 1, 3], [0, 0, 0, 1]])
 
 
 def test_pose_from_list():
@@ -41,9 +35,7 @@ def test_pose_from_list():
     pose = Pose.from_list(pose_list)
     assert isinstance(pose, Pose), "Pose should be a Pose object"
     assert isinstance(pose.position, Vector3d), "Position should be a Vector3d object"
-    assert isinstance(
-        pose.orientation, Vector3d
-    ), "Orientation should be a Vector3d object"
+    assert isinstance(pose.orientation, Vector3d), "Orientation should be a Vector3d object"
     assert pose.as_rotation_matrix().shape == (3, 3), "Rotation matrix should be 3x3"
 
 
@@ -56,9 +48,7 @@ def test_pose_from_dict():
     pose = Pose(**pose_dict)
     assert isinstance(pose, Pose), "Pose should be a Pose object"
     assert isinstance(pose.position, Vector3d), "Position should be a Vector3d object"
-    assert isinstance(
-        pose.orientation, Vector3d
-    ), "Orientation should be a Vector3d object"
+    assert isinstance(pose.orientation, Vector3d), "Orientation should be a Vector3d object"
     assert pose.as_rotation_matrix().shape == (3, 3), "Rotation matrix should be 3x3"
 
 
@@ -66,32 +56,24 @@ def test_as_rotation_matrix(pose1):
     """Test converting orientation to rotation matrix."""
     rotation_matrix = pose1.as_rotation_matrix()
     assert rotation_matrix.shape == (3, 3), "Rotation matrix should be 3x3"
-    assert isinstance(
-        rotation_matrix, np.ndarray
-    ), "Rotation matrix should be a NumPy array"
+    assert isinstance(rotation_matrix, np.ndarray), "Rotation matrix should be a NumPy array"
 
 
 def test_to_homogenous_transformation_matrix(pose1):
     """Test conversion to a 4x4 homogeneous transformation matrix."""
     transformation_matrix = pose1.matrix
     assert transformation_matrix.shape == (4, 4), "Transformation matrix should be 4x4"
-    assert np.allclose(
-        transformation_matrix[3, :], [0, 0, 0, 1]
-    ), "Last row should be [0, 0, 0, 1]"
+    assert np.allclose(transformation_matrix[3, :], [0, 0, 0, 1]), "Last row should be [0, 0, 0, 1]"
 
 
 def test_pose_multiplication(pose1, pose2):
     """Test pose multiplication."""
     result_pose = pose1 * pose2
-    assert isinstance(
-        result_pose, Pose
-    ), "Result of pose multiplication should be a Pose object"
+    assert isinstance(result_pose, Pose), "Result of pose multiplication should be a Pose object"
 
     # Test position
     result_position = result_pose.position
-    assert isinstance(
-        result_position, Vector3d
-    ), "Resulting position should be a Vector3d object"
+    assert isinstance(result_position, Vector3d), "Resulting position should be a Vector3d object"
     assert (
         len([result_position.x, result_position.y, result_position.z]) == 3
     ), "Position should have 3 coordinates"
@@ -120,9 +102,7 @@ def test_matrix_multiplication(pose1, identity_matrix):
 def test_reverse_matrix_multiplication(pose1, identity_matrix):
     """Test right multiplication with a 4x4 matrix."""
     result_pose = identity_matrix * pose1
-    assert isinstance(
-        result_pose, Pose
-    ), "Right multiplication should return a Pose object"
+    assert isinstance(result_pose, Pose), "Right multiplication should return a Pose object"
     assert np.allclose(
         result_pose.matrix, pose1.matrix
     ), "Multiplying by identity matrix should not change the pose"
@@ -154,9 +134,7 @@ def test_matrix_to_pose_conversion(pose1):
     matrix = pose1.matrix
     new_pose = pose1._matrix_to_pose(matrix)
     assert isinstance(new_pose, Pose), "Matrix should convert back to a Pose"
-    assert np.allclose(
-        matrix, new_pose.matrix
-    ), "Matrix conversion should be consistent"
+    assert np.allclose(matrix, new_pose.matrix), "Matrix conversion should be consistent"
 
 
 def test_translation_matrix_multiplication(pose1):

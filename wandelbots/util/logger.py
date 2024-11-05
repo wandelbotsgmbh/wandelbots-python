@@ -25,9 +25,7 @@ def setup_logging(level=logging.INFO, format_str=None):
         format_str (str, optional): Logging format string.
     """
     if format_str is None:
-        format_str = (
-            "[%(asctime)s] [nova_client] %(levelname)s: %(name)s:%(lineno)d %(message)s"
-        )
+        format_str = "[%(asctime)s] [nova_client] %(levelname)s: %(name)s:%(lineno)d %(message)s"
 
     handler = logging.StreamHandler()
     formatter = logging.Formatter(format_str, "%Y-%m-%d %H:%M:%S")

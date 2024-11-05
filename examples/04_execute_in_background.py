@@ -32,22 +32,18 @@ my_robot = MotionGroup(
 
 
 async def main():
-
     # Get current TCP pose and offset it slightly along the z-axis
     current_pose: Pose = my_robot.current_tcp_pose()
     target_pose = current_pose.translate(Vector3d(z=100))
 
     # Plan a line motion to the target pose
     planner = Planner(motion_group=my_robot)
-    trajectory = [
-        planner.line(pose=target_pose),
-    ]
+    trajectory = [planner.line(pose=target_pose)]
 
     # Try to plan the desired trajectory asynchronously
     try:
         plan_result = await planner.plan_async(
-            trajectory=trajectory,
-            start_joints=my_robot.current_joints(),
+            trajectory=trajectory, start_joints=my_robot.current_joints()
         )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")
@@ -60,7 +56,9 @@ async def main():
             async for state in my_robot.execute_motion_stream_async(motion, speed):
                 time_until_complete = state.time_to_end
                 print(f"Motion done in: {time_until_complete/1000} s")
-        except MotionExecutionInterruptedError:  # This has to be in here to catch motion interruptions by the user
+        except (
+            MotionExecutionInterruptedError
+        ):  # This has to be in here to catch motion interruptions by the user
             pass
         except Exception as e:
             print(f"An error occurred during execution: {e}")

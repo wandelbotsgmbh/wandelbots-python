@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 from dotenv import load_dotenv
 
@@ -24,7 +24,6 @@ my_robot = MotionGroup(
 )
 
 if __name__ == "__main__":
-
     # Available TCPs on the controller
     print(my_robot.tcps())
 

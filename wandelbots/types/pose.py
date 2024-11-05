@@ -13,13 +13,10 @@ from scipy.spatial.transform import Rotation as R
 
 
 class Pose(Pose):
-
     position: Vector3d
     orientation: Vector3d
 
-    __array_priority__ = (
-        1000  # Give Pose higher priority over NumPy arrays (required for __rmul__)
-    )
+    __array_priority__ = 1000  # Give Pose higher priority over NumPy arrays (required for __rmul__)
 
     @field_validator("position", "orientation", mode="before")
     def validate_vector3d(cls, value):
@@ -43,9 +40,7 @@ class Pose(Pose):
         """Returns a copy of the current pose object."""
         return Pose(
             position=Vector3d(x=self.position.x, y=self.position.y, z=self.position.z),
-            orientation=Vector3d(
-                x=self.orientation.x, y=self.orientation.y, z=self.orientation.z
-            ),
+            orientation=Vector3d(x=self.orientation.x, y=self.orientation.y, z=self.orientation.z),
         )
 
     def as_rotation_matrix(self):
@@ -68,9 +63,7 @@ class Pose(Pose):
         rotation_vec = R.from_matrix(rotation_matrix).as_rotvec()
         return Pose(
             position=Vector3d(x=position[0], y=position[1], z=position[2]),
-            orientation=Vector3d(
-                x=rotation_vec[0], y=rotation_vec[1], z=rotation_vec[2]
-            ),
+            orientation=Vector3d(x=rotation_vec[0], y=rotation_vec[1], z=rotation_vec[2]),
         )
 
     @property

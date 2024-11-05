@@ -7,9 +7,7 @@ logger = _get_logger(__name__)
 _get_base_url = lambda url, cell: f"{url}/api/v1/cells/{cell}/controllers"
 
 
-def set_values(
-    instance: Instance, cell: str, controller: str, values: list[dict]
-) -> None:
+def set_values(instance: Instance, cell: str, controller: str, values: list[dict]) -> None:
     url = f"{_get_base_url(instance.url, cell)}/{controller}/ios/values"
     code, _ = put(url, data=values, instance=instance)
     if code != 200:

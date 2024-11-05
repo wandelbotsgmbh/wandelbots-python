@@ -6,7 +6,6 @@ from dotenv import load_dotenv, find_dotenv
 
 @pytest.fixture(scope="session", autouse=True)
 def check_test_motion_group_available(request):
-
     # Get config from .env file
     test_env = find_dotenv("envs/.env.tests")
     load_dotenv(test_env)
@@ -35,14 +34,10 @@ def check_test_motion_group_available(request):
     motion_group = os.getenv("MOTION_GROUP")
     tcp = os.getenv("TCP")
     if not (cell and motion_group and tcp):
-        pytest.fail(
-            "Required environment variables CELL_ID, MOTION_GROUP, or TCP are missing."
-        )
+        pytest.fail("Required environment variables CELL_ID, MOTION_GROUP, or TCP are missing.")
 
     # Check Cell, Motion Group, and TCP availability in nova service
-    endpoint_url = (
-        f"{nova_host}/api/v1/cells/{cell}/motion-groups/{motion_group}/state?tcp={tcp}"
-    )
+    endpoint_url = f"{nova_host}/api/v1/cells/{cell}/motion-groups/{motion_group}/state?tcp={tcp}"
     try:
         response = requests.get(endpoint_url, timeout=5, auth=auth)
         response.raise_for_status()

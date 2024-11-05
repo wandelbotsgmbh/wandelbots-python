@@ -27,16 +27,8 @@ my_robot = MotionGroup(
 )
 
 if __name__ == "__main__":
-
     # Define a home position
-    home_joints = [
-        0,
-        -np.pi / 2,
-        -np.pi / 2,
-        -np.pi / 2,
-        np.pi / 2,
-        0,
-    ]  # [0, -90, -90, -90, 90, 0]
+    home_joints = [0, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0]  # [0, -90, -90, -90, 90, 0]
 
     # Get current TCP pose and offset it slightly along the x-axis
     current_pose: Pose = my_robot.current_tcp_pose()
@@ -52,10 +44,7 @@ if __name__ == "__main__":
 
     # Try to plan the desired trajectory
     try:
-        plan_result = planner.plan(
-            trajectory=trajectory,
-            start_joints=my_robot.current_joints(),
-        )
+        plan_result = planner.plan(trajectory=trajectory, start_joints=my_robot.current_joints())
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")
         exit()
