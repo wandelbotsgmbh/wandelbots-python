@@ -5,6 +5,21 @@ from dotenv import load_dotenv, find_dotenv
 import requests.auth
 
 
+def get_auth_token() -> dict[str, str]:
+    token = os.getenv("NOVA_ACCESS_TOKEN")
+    if not token:
+        return None
+    return {"Authorization": f"Bearer {token}"}
+
+
+def get_basic_auth() -> requests.auth.HTTPBasicAuth:
+    username = os.getenv("NOVA_USERNAME")
+    password = os.getenv("NOVA_PASSWORD")
+    if not username or not password:
+        return None
+    return requests.auth.HTTPBasicAuth(username, password)
+
+
 @pytest.fixture(scope="session", autouse=True)
 def check_test_motion_group_available(request):
 
@@ -19,15 +34,15 @@ def check_test_motion_group_available(request):
 
     # General availability check
     try:
-        if not os.getenv("NOVA_ACCESS_TOKEN"):
-            headers = None
-        else:
-            token = os.getenv("NOVA_ACCESS_TOKEN")
-            if not token:
-                pytest.fail("NOVA_ACCESS_TOKEN not set in the environment.")
+        headers = get_auth_token()
+        auth = get_basic_auth()
 
-            headers = {"Authorization": f"Bearer {token}"}
-        response = requests.get(nova_host, timeout=5, headers=headers)
+        if "wandelbots.io" in nova_host and not headers and not auth:
+            pytest.fail(
+                "Please provide NOVA_ACCESS_TOKEN or NOVA_USERNAME and NOVA_PASSWORD in the environment (depending on the used auth method)."
+            )
+
+        response = requests.get(nova_host, timeout=5, headers=headers, auth=auth)
         response.raise_for_status()
     except requests.RequestException as e:
         skip_reason = f"Skipping tests: Backend service is not available at {nova_host}. Error: {e}"
@@ -47,7 +62,7 @@ def check_test_motion_group_available(request):
         f"{nova_host}/api/v1/cells/{cell}/motion-groups/{motion_group}/state?tcp={tcp}"
     )
     try:
-        response = requests.get(endpoint_url, timeout=5, headers=headers)
+        response = requests.get(endpoint_url, timeout=5, headers=headers, auth=auth)
         response.raise_for_status()
     except requests.HTTPError as e:
         try:

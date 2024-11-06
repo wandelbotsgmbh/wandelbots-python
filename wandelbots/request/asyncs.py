@@ -1,5 +1,7 @@
 import httpx
 from typing import Dict, Tuple, Optional
+
+import requests
 from wandelbots.util.logger import _get_logger
 from wandelbots.request.config import TIMEOUT
 from wandelbots.core.instance import Instance
@@ -15,7 +17,9 @@ def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
 
 def _get_auth(instance: Instance) -> Optional[httpx.BasicAuth]:
     if instance.has_basic_auth():
-        return httpx.BasicAuth(username=instance.user, password=instance.password)
+        return requests.auth.HTTPBasicAuth(
+            username=instance.user, password=instance.password
+        )
     return None
 
 

@@ -20,7 +20,7 @@ class Instance:
         """remove any trailing slashes and validate scheme"""
         _url = host.rstrip("/")
 
-        if self.has_access_token and self.has_basic_auth():
+        if self.has_access_token() and self.has_basic_auth():
             raise ValueError(
                 "please choose either user and password or access token access"
             )
