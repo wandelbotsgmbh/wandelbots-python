@@ -14,7 +14,7 @@ Current Features:
 - Sync and Async Planning and Execution
 - Pose Transformations
 
-## Table of contents
+## Table Of Contents
 
 - [Requirements](#requirements)
 - [Build](#build)
@@ -113,7 +113,7 @@ For further examples take a look at the [examples](https://github.com/wandelbots
 $ poetry run pytest -rs -v
 ```
 
-#### integration tests
+#### Integration Tests
 
 By default integration tests will be skipped. 
 To run them localy create an env file at `envs/.env.tests` with your values.
