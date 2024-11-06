@@ -8,13 +8,13 @@ __logger = _get_logger(__name__)
 
 
 def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
-    if instance.has_auth():
+    if instance.has_access_token():
         return {"Authorization": f"Bearer {instance.access_token}"}
     return None
 
 
 def _get_auth(instance: Instance) -> Optional[httpx.BasicAuth]:
-    if instance.has_auth():
+    if instance.has_basic_auth():
         return httpx.BasicAuth(username=instance.user, password=instance.password)
     return None
 

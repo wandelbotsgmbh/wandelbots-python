@@ -11,29 +11,27 @@ class Instance:
     ):
         self._api_version = "v1"
         self.access_token = access_token
-        self.user = (user,)
-        self.password = (password,)
+        self.user = user
+        self.password = password
         self.url = self._parse_url(url)
         self.logger = _get_logger(__name__)
 
     def _parse_url(self, host: str) -> str:
         """remove any trailing slashes and validate scheme"""
         _url = host.rstrip("/")
-        is_basic_set = not self.user or not self.password
-        is_token_set = not self.access_token
 
-        if is_basic_set and is_token_set:
+        if self.has_access_token and self.has_basic_auth():
             raise ValueError(
                 "please choose either user and password or access token access"
             )
 
         if _url.startswith("https"):
-            if not is_token_set and not is_basic_set:
+            if not self.has_auth():
                 raise ValueError(
                     "Access token or user and password are required for https connections"
                 )
         elif _url.startswith("http"):
-            if is_basic_set or is_token_set:
+            if self.has_auth():
                 raise ValueError(
                     "Access token and/or user and password are not required for http connections"
                 )
@@ -58,4 +56,10 @@ class Instance:
         # do some connection stuff
 
     def has_auth(self):
-        return self.access_token
+        return self.has_basic_auth() or self.has_access_token()
+    
+    def has_basic_auth(self):
+        return self.user is not None and self.password is not None
+    
+    def has_access_token(self):
+        return self.access_token is not None
