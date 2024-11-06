@@ -9,7 +9,7 @@ __logger = _get_logger(__name__)
 
 def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
     if instance.has_auth():
-        return {"Authorization": f"Bearer {instance.api_token}"}
+        return {"Authorization": f"Bearer {instance.access_token}"}
     return None
 
 

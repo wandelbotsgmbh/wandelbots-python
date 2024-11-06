@@ -19,12 +19,12 @@ def check_test_motion_group_available(request):
 
     # General availability check
     try:
-        if not os.getenv("NOVA_TOKEN"):
+        if not os.getenv("NOVA_ACCESS_TOKEN"):
             headers = None
         else:
-            token = os.getenv("NOVA_TOKEN")
+            token = os.getenv("NOVA_ACCESS_TOKEN")
             if not token:
-                pytest.fail("NOVA_TOKEN not set in the environment.")
+                pytest.fail("NOVA_ACCESS_TOKEN not set in the environment.")
 
             headers = {
                 "Authorization": f"Bearer {token}"

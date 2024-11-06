@@ -120,7 +120,7 @@ To run them localy create an env file at `envs/.env.tests` with your values.
 
 ```txt
 WANDELAPI_BASE_URL=
-NOVA_TOKEN=
+NOVA_ACCESS_TOKEN=
 CELL_ID=
 MOTION_GROUP=
 TCP=
