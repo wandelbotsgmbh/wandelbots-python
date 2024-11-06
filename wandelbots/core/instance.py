@@ -5,23 +5,37 @@ class Instance:
     def __init__(
         self,
         url="http://api-gateway.wandelbots.svc.cluster.local:8080",
+        user=None,
+        password=None,
         access_token=None,
     ):
         self._api_version = "v1"
         self.access_token = access_token
+        self.user = (user,)
+        self.password = (password,)
         self.url = self._parse_url(url)
         self.logger = _get_logger(__name__)
 
     def _parse_url(self, host: str) -> str:
         """remove any trailing slashes and validate scheme"""
         _url = host.rstrip("/")
+        is_basic_set = not self.user or not self.password
+        is_token_set = not self.access_token
+
+        if is_basic_set and is_token_set:
+            raise ValueError(
+                "please choose either user and password or access token access"
+            )
+
         if _url.startswith("https"):
-            if not self.access_token:
-                raise ValueError("User and password are required for https connections")
-        elif _url.startswith("http"):
-            if self.access_token:
+            if not is_token_set and not is_basic_set:
                 raise ValueError(
-                    "User and password are not required for http connections"
+                    "Access token or user and password are required for https connections"
+                )
+        elif _url.startswith("http"):
+            if is_basic_set or is_token_set:
+                raise ValueError(
+                    "Access token and/or user and password are not required for http connections"
                 )
         elif "wandelbots.io" in _url:
             _url = "https://" + _url

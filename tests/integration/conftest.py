@@ -26,9 +26,7 @@ def check_test_motion_group_available(request):
             if not token:
                 pytest.fail("NOVA_ACCESS_TOKEN not set in the environment.")
 
-            headers = {
-                "Authorization": f"Bearer {token}"
-            }
+            headers = {"Authorization": f"Bearer {token}"}
         response = requests.get(nova_host, timeout=5, headers=headers)
         response.raise_for_status()
     except requests.RequestException as e:
