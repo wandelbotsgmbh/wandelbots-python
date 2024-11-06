@@ -57,9 +57,9 @@ class Instance:
 
     def has_auth(self):
         return self.has_basic_auth() or self.has_access_token()
-    
+
     def has_basic_auth(self):
         return self.user is not None and self.password is not None
-    
+
     def has_access_token(self):
         return self.access_token is not None
