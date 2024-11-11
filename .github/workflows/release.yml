@@ -57,11 +57,11 @@ jobs:
   publish-snapshot:
     if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
+
     permissions:
-      contents: write
-      issues: write
-      pull-requests: write
       id-token: write
+      contents: write
+
     steps:
       - name: Setup | Checkout Repository at workflow sha
         uses: actions/checkout@v4
@@ -89,7 +89,7 @@ jobs:
           SNAPSHOT_VERSION="${LATEST_VERSION}-pr.${BRANCH_NAME}.${PR_NUMBER}.${COMMIT_SHA}"
           echo "SNAPSHOT_VERSION=$SNAPSHOT_VERSION" >> $GITHUB_ENV
       - name: Action | Semantic Version Release
-        id: release
+        id: snapshotrelease
         uses: python-semantic-release/python-semantic-release@v9.11.1
         with:
           build: true
@@ -97,7 +97,7 @@ jobs:
           git_committer_name: "github-actions"
           git_committer_email: "actions@users.noreply.github.com"
           prerelease: true
-          build_metadata: ${{ env.SNAPSHOT_VERSION }}
+          prerelease_token: ${{ env.SNAPSHOT_VERSION }}
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
