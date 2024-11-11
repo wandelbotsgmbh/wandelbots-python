@@ -63,14 +63,16 @@ jobs:
       pull-requests: write
       id-token: write
     steps:
-      - name: Checkout code
+      - name: Setup | Checkout Repository at workflow sha
         uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+
+      - name: Setup | Force correct release branch on workflow sha
+        run: |
+          git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+
       - name: Fetch latest release version
         id: fetch_latest_release
         run: |
