@@ -61,9 +61,7 @@ class Planner:
         )
         return self._handle_plan_response(response)
 
-    async def _plan_with_rae_async(
-        self, plan_request: PlanRequest
-    ) -> PlanSuccessfulResponse:
+    async def _plan_with_rae_async(self, plan_request: PlanRequest) -> PlanSuccessfulResponse:
         response = await motion_api.plan_motion_async(
             instance=self.instance, cell=self.cell, plan_request=plan_request
         )
@@ -79,20 +77,14 @@ class Planner:
         return Command(cartesian_ptp=pose, settings=settings)
 
     def plan(
-        self,
-        trajectory: list[Command],
-        start_joints: list[float],
-        tcp: str = None,
+        self, trajectory: list[Command], start_joints: list[float], tcp: str = None
     ) -> PlanSuccessfulResponse:
         tcp = self._from_default_tcp(tcp)
         rae_plan_request = self._create_plan_request(tcp, trajectory, start_joints)
         return self._plan_with_rae(rae_plan_request)
 
     async def plan_async(
-        self,
-        trajectory: list[Command],
-        start_joints: list[float],
-        tcp: str = None,
+        self, trajectory: list[Command], start_joints: list[float], tcp: str = None
     ) -> PlanSuccessfulResponse:
         tcp = self._from_default_tcp(tcp)
         rae_plan_request = self._create_plan_request(tcp, trajectory, start_joints)

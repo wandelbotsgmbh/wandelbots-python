@@ -21,9 +21,7 @@ class Instance:
         _url = host.rstrip("/")
 
         if self.has_access_token() and self.has_basic_auth():
-            raise ValueError(
-                "please choose either user and password or access token access"
-            )
+            raise ValueError("please choose either user and password or access token access")
 
         if _url.startswith("https"):
             if not self.has_auth():

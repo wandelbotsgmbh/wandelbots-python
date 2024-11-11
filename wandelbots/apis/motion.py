@@ -1,27 +1,24 @@
 import asyncio
-import wandelbots_api_client as wb_api
 import json
+from typing import AsyncGenerator, Callable, Literal
 
-from websockets.sync.client import connect
-from websockets.exceptions import ConnectionClosedError
-from typing import AsyncGenerator, Literal, Callable
-
+import wandelbots_api_client as wb_api
 from wandelbots_api_client.rest import ApiException
+from websockets.exceptions import ConnectionClosedError
+from websockets.sync.client import connect
+
 from wandelbots.core.instance import Instance
-from wandelbots.request.syncs import get, delete, post, put
+from wandelbots.exceptions import MotionExecutionError, MotionExecutionInterruptedError
 from wandelbots.request.asyncs import post as async_post
-from wandelbots.util.logger import _get_logger
+from wandelbots.request.syncs import delete, get, post, put
 from wandelbots.types import (
     MotionIdsListResponse,
+    MoveResponse,
     PlanRequest,
     PlanResponse,
-    MoveResponse,
     StreamMoveResponse,
 )
-from wandelbots.exceptions import (
-    MotionExecutionError,
-    MotionExecutionInterruptedError,
-)
+from wandelbots.util.logger import _get_logger
 
 logger = _get_logger(__name__)
 
@@ -62,21 +59,17 @@ def plan_motion(instance: Instance, cell: str, plan_request: PlanRequest) -> boo
     logger.debug(f"Planning motion for cell {cell} on: {url}")
     code, response = post(url, data=plan_request.model_dump(), instance=instance)
     if code != 200:
-        logger.error(f"Failed to plan motion")
+        logger.error("Failed to plan motion")
         return None
     return PlanResponse.from_dict(response)
 
 
-async def plan_motion_async(
-    instance: Instance, cell: str, plan_request: PlanRequest
-) -> bool:
+async def plan_motion_async(instance: Instance, cell: str, plan_request: PlanRequest) -> bool:
     url = f"{_get_base_url(instance.url, cell)}"
     logger.debug(f"Async planning motion for cell {cell} on: {url}")
-    code, response = await async_post(
-        url, data=plan_request.model_dump(), instance=instance
-    )
+    code, response = await async_post(url, data=plan_request.model_dump(), instance=instance)
     if code != 200:
-        logger.error(f"Failed to plan motion")
+        logger.error("Failed to plan motion")
         return None
     return PlanResponse.from_dict(response)
 
@@ -101,9 +94,7 @@ async def stream_motion_async(
     direction: Literal["forward", "backward"] = "forward",
 ) -> AsyncGenerator[MoveResponse, None]:
     wb_motion_api = wb_api.MotionApi(_get_wb_api_client(instance))
-    logger.debug(
-        f"Connected to Motion API {wb_motion_api.api_client.configuration.host}"
-    )
+    logger.debug(f"Connected to Motion API {wb_motion_api.api_client.configuration.host}")
     _func = (
         wb_motion_api.stream_move_forward
         if direction == "forward"
@@ -113,9 +104,7 @@ async def stream_motion_async(
         async for response in _func(cell, motion, playback_speed, response_rate):
             if hasattr(response, "error") and response.error:
                 logger.error(f"Error in motion stream ({response.error.message})")
-                raise MotionExecutionError(
-                    f"Error in motion stream ({response.error.message})"
-                )
+                raise MotionExecutionError(f"Error in motion stream ({response.error.message})")
             else:
                 if hasattr(response, "stop_response") and response.stop_response:
                     stop_code = response.stop_response.stop_code
@@ -128,14 +117,10 @@ async def stream_motion_async(
                     elif stop_code == "STOP_CODE_ERROR":
                         stop_message = response.stop_response.message
                         logger.error(f"Error in motion stream ({stop_message})")
-                        raise MotionExecutionError(
-                            f"Error in motion stream ({stop_message})"
-                        )
+                        raise MotionExecutionError(f"Error in motion stream ({stop_message})")
                 elif hasattr(response, "move_response") and response.move_response:
                     move_response = response.move_response
-                    current_location_on_trajectory = (
-                        move_response.current_location_on_trajectory
-                    )
+                    current_location_on_trajectory = move_response.current_location_on_trajectory
                     time_until_path_end = move_response.time_to_end
                     logger.debug(
                         f"Current location on trajectory: {current_location_on_trajectory} | time to path end: {time_until_path_end}"
@@ -161,7 +146,6 @@ def stream_motion(
     direction: Literal["forward", "backward"] = "forward",
     callback: Callable[[MoveResponse], None] = None,
 ) -> None:
-
     uri = f"{instance.socket_uri}/cells/{cell}/motions/{motion}/execute{direction}"
     uri += f"?playback_speed_in_percent={playback_speed}&response_rate={response_rate}"
     logger.debug(f"Connecting to {uri}")
@@ -179,9 +163,7 @@ def stream_motion(
                     continue
                 if hasattr(response, "error") and response.error:
                     logger.error(f"Error in motion stream ({response.error.message})")
-                    raise MotionExecutionError(
-                        f"Error in motion stream ({response.error.message})"
-                    )
+                    raise MotionExecutionError(f"Error in motion stream ({response.error.message})")
                 else:
                     if hasattr(response, "stop_response") and response.stop_response:
                         stop_code = response.stop_response.stop_code
@@ -190,15 +172,11 @@ def stream_motion(
                             return
                         elif stop_code == "STOP_CODE_USER_REQUEST":
                             logger.info("Motion stopped by user")
-                            raise MotionExecutionInterruptedError(
-                                "Motion stopped by user"
-                            )
+                            raise MotionExecutionInterruptedError("Motion stopped by user")
                         elif stop_code == "STOP_CODE_ERROR":
                             stop_message = response.stop_response.message
                             logger.error(f"Error in motion stream ({stop_message})")
-                            raise MotionExecutionError(
-                                f"Error in motion stream ({stop_message})"
-                            )
+                            raise MotionExecutionError(f"Error in motion stream ({stop_message})")
                     elif hasattr(response, "move_response") and response.move_response:
                         move_response = response.move_response
                         current_location_on_trajectory = (

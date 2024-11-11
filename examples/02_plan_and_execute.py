@@ -1,12 +1,12 @@
-import os
-import numpy as np
 import logging
+import os
 
+import numpy as np
 from dotenv import load_dotenv
 
 from wandelbots import Instance, MotionGroup, Planner
-from wandelbots.types import Pose, Vector3d
 from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
+from wandelbots.types import Pose, Vector3d
 from wandelbots.util.logger import setup_logging
 
 load_dotenv()  # Load environment variables from .env
@@ -14,8 +14,7 @@ setup_logging(level=logging.INFO)
 
 
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"),
-    access_token=os.getenv("NOVA_ACCESS_TOKEN"),
+    url=os.getenv("WANDELAPI_BASE_URL"), access_token=os.getenv("NOVA_ACCESS_TOKEN")
 )
 
 my_robot = MotionGroup(
@@ -26,16 +25,9 @@ my_robot = MotionGroup(
 )
 
 if __name__ == "__main__":
-
     # Define a home position
-    home_joints = [
-        0,
-        -np.pi / 2,
-        -np.pi / 2,
-        -np.pi / 2,
-        np.pi / 2,
-        0,
-    ]  # [0, -90, -90, -90, 90, 0]
+    home_joints = [0, -np.pi / 2, -np.pi / 2, -np.pi / 2, np.pi / 2, 0]
+    # [0, -90, -90, -90, 90, 0]
 
     # Get current TCP pose and offset it slightly along the x-axis
     current_pose: Pose = my_robot.current_tcp_pose()
@@ -51,10 +43,7 @@ if __name__ == "__main__":
 
     # Try to plan the desired trajectory
     try:
-        plan_result = planner.plan(
-            trajectory=trajectory,
-            start_joints=my_robot.current_joints(),
-        )
+        plan_result = planner.plan(trajectory=trajectory, start_joints=my_robot.current_joints())
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")
         exit()

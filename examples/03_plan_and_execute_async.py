@@ -14,8 +14,7 @@ setup_logging(level=logging.INFO)
 
 
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"),
-    access_token=os.getenv("NOVA_ACCESS_TOKEN"),
+    url=os.getenv("WANDELAPI_BASE_URL"), access_token=os.getenv("NOVA_ACCESS_TOKEN")
 )
 
 my_robot = MotionGroup(
@@ -27,22 +26,18 @@ my_robot = MotionGroup(
 
 
 async def main():
-
     # Get current TCP pose and offset it slightly along the z-axis
     current_pose: Pose = my_robot.current_tcp_pose()
     target_pose = current_pose.translate(Vector3d(z=100))
 
     # Plan a line motion to the target pose
     planner = Planner(motion_group=my_robot)
-    trajectory = [
-        planner.line(pose=target_pose),
-    ]
+    trajectory = [planner.line(pose=target_pose)]
 
     # Try to plan the desired trajectory asynchronously
     try:
         plan_result = await planner.plan_async(
-            trajectory=trajectory,
-            start_joints=my_robot.current_joints(),
+            trajectory=trajectory, start_joints=my_robot.current_joints()
         )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")

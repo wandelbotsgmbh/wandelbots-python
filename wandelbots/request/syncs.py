@@ -16,9 +16,7 @@ def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
 
 def _get_auth(instance: Instance) -> Optional[httpx.BasicAuth]:
     if instance.has_basic_auth():
-        return requests.auth.HTTPBasicAuth(
-            username=instance.user, password=instance.password
-        )
+        return requests.auth.HTTPBasicAuth(username=instance.user, password=instance.password)
     return None
 
 
@@ -27,9 +25,7 @@ def _handle_request_error(err):
         if err.response.status_code == 401:
             __logger.error("401 Unauthorized access. Check your credentials.")
         else:
-            __logger.error(
-                f"HTTP error occurred: {err} - Response content: {err.response.text}"
-            )
+            __logger.error(f"HTTP error occurred: {err} - Response content: {err.response.text}")
     elif isinstance(err, requests.ConnectionError):
         __logger.error(f"Connection error occurred: {err}")
     elif isinstance(err, requests.Timeout):
@@ -41,10 +37,7 @@ def _handle_request_error(err):
 def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
     try:
         response = requests.get(
-            url,
-            timeout=TIMEOUT,
-            headers=_get_auth_header(instance),
-            auth=_get_auth(instance),
+            url, timeout=TIMEOUT, headers=_get_auth_header(instance), auth=_get_auth(instance)
         )
         response.raise_for_status()
         return response.status_code, response.json()
@@ -56,10 +49,7 @@ def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
 def delete(url: str, instance: Instance) -> int:
     try:
         response = requests.delete(
-            url,
-            timeout=TIMEOUT,
-            headers=_get_auth_header(instance),
-            auth=_get_auth(instance),
+            url, timeout=TIMEOUT, headers=_get_auth_header(instance), auth=_get_auth(instance)
         )
         response.raise_for_status()
         return response.status_code

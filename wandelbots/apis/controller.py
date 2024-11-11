@@ -25,9 +25,7 @@ def set_default_mode(instance: Instance, cell: str, controller: str, mode: str) 
     url = f"{_get_base_url(instance.url, cell)}/{controller}/mode?mode={mode}"
     code, _ = put(url, instance=instance)
     if code != 200:
-        logger.error(
-            f"Failed to set default mode to {mode} for controller {controller}"
-        )
+        logger.error(f"Failed to set default mode to {mode} for controller {controller}")
 
 
 def get_current_mode(instance: Instance, cell: str, controller: str) -> Optional[str]:
