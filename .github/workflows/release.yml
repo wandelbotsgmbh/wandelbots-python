@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
+      - "**" # Match all branches for snapshot releases
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     concurrency: release
 
@@ -49,3 +53,52 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.release.outputs.tag }}
+
+  publish-snapshot:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Fetch latest release version
+        id: fetch_latest_release
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r .tag_name)
+          echo "LATEST_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
+      - name: Update version for snapshot
+        id: snapshot_version
+        env:
+          LATEST_VERSION: ${{ env.LATEST_VERSION }}
+        run: |
+          PR_NUMBER=$(echo $GITHUB_REF | sed 's/refs\/pull\/\([0-9]*\)\/.*/\1/')
+          BRANCH_NAME=$(echo $GITHUB_HEAD_REF | sed 's/\//-/g')
+          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
+          SNAPSHOT_VERSION="${LATEST_VERSION}-pr.${BRANCH_NAME}.${PR_NUMBER}.${COMMIT_SHA}"
+          echo "SNAPSHOT_VERSION=$SNAPSHOT_VERSION" >> $GITHUB_ENV
+      - name: Action | Semantic Version Release
+        id: release
+        uses: python-semantic-release/python-semantic-release@v9.11.1
+        with:
+          build: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_committer_name: "github-actions"
+          git_committer_email: "actions@users.noreply.github.com"
+          prerelease: true
+          build_metadata: ${{ env.SNAPSHOT_VERSION }}
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_TOKEN }}
+        if: steps.release.outputs.released == 'true'
