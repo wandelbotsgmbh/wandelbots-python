@@ -145,19 +145,14 @@ class MotionGroup:
         """Execute a motion asynchronously, yielding MoveResponse objects.
         Has to be used within an 'async for' loop.
         """
-        remaining_io_actions = sorted(
-            list(io_actions), key=lambda x: x.location, reverse=True
-        )
+        remaining_io_actions = sorted(list(io_actions), key=lambda x: x.location, reverse=True)
 
         async with self._async_execution_context(motion):
             async for response in motion_api.stream_motion_async(
                 self.instance, self.cell, motion, speed, response_rate_ms, direction
             ):
                 location = response.current_location_on_trajectory
-                while (
-                    remaining_io_actions
-                    and remaining_io_actions[-1].location <= location
-                ):
+                while remaining_io_actions and remaining_io_actions[-1].location <= location:
                     io_action = remaining_io_actions.pop()
                     self.set_ios([io_action.io])
                     self.logger.info(
@@ -217,9 +212,7 @@ class MotionGroup:
         controller_io_api.set_values(self.instance, self.cell, self.controller, values)
 
     def get_ios(self, ios: list[str]) -> list[IOValue]:
-        return controller_io_api.get_values(
-            self.instance, self.cell, self.controller, ios
-        )
+        return controller_io_api.get_values(self.instance, self.cell, self.controller, ios)
 
     def set_io(self, value: IOValue) -> None:
         self.set_ios([value])

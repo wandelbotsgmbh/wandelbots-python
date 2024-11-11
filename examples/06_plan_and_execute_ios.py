@@ -1,12 +1,12 @@
-import os
-import logging
 import asyncio
+import logging
+import os
 
 from dotenv import load_dotenv
 
 from wandelbots import Instance, MotionGroup, Planner
-from wandelbots.types import Pose, Vector3d
 from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
+from wandelbots.types import Pose
 from wandelbots.util.logger import setup_logging
 
 load_dotenv()  # Load environment variables from .env
@@ -31,7 +31,6 @@ my_robot = MotionGroup(
 
 
 async def main():
-
     # Get current TCP pose and offset it slightly along the z-axis
     current_pose: Pose = my_robot.current_tcp_pose()
     target_pose = current_pose * Pose.from_list([0, 0, 100, 0, 0, 0])
@@ -53,8 +52,7 @@ async def main():
     # Try to plan the desired trajectory asynchronously
     try:
         plan_result, io_actions = await planner.plan_async(
-            trajectory=trajectory,
-            start_joints=my_robot.current_joints(),
+            trajectory=trajectory, start_joints=my_robot.current_joints()
         )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")

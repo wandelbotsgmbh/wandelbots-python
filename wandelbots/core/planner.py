@@ -88,10 +88,7 @@ class Planner:
         return IOValue.from_key_value(key=key, value=value)
 
     def plan(
-        self,
-        trajectory: list[Union[Command, IOValue]],
-        start_joints: list[float],
-        tcp: str = None,
+        self, trajectory: list[Union[Command, IOValue]], start_joints: list[float], tcp: str = None
     ) -> tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]:
         tcp = self._from_default_tcp(tcp)
         move_commands, io_actions = self._resolve_commands(trajectory)
@@ -99,10 +96,7 @@ class Planner:
         return self._plan_with_rae(rae_plan_request), io_actions
 
     async def plan_async(
-        self,
-        trajectory: list[CommandType],
-        start_joints: list[float],
-        tcp: str = None,
+        self, trajectory: list[CommandType], start_joints: list[float], tcp: str = None
     ) -> tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]:
         tcp = self._from_default_tcp(tcp)
         move_commands, io_actions = self._resolve_commands(trajectory)
@@ -110,9 +104,7 @@ class Planner:
         return await self._plan_with_rae_async(rae_plan_request), io_actions
 
     @staticmethod
-    def _resolve_commands(
-        trajectory: list[CommandType],
-    ) -> tuple[list[Command], tuple[SetIO, ...]]:
+    def _resolve_commands(trajectory: list[CommandType]) -> tuple[list[Command], tuple[SetIO, ...]]:
         """Split-up input trajectory into move commands and io actions."""
 
         path_param = 0

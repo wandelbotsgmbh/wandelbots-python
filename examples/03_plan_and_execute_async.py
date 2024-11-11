@@ -37,8 +37,7 @@ async def main():
     # Try to plan the desired trajectory asynchronously
     try:
         plan_result, io_actions = await planner.plan_async(
-            trajectory=trajectory,
-            start_joints=my_robot.current_joints(),
+            trajectory=trajectory, start_joints=my_robot.current_joints()
         )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")
