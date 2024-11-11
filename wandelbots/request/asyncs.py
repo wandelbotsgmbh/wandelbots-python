@@ -17,9 +17,7 @@ def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
 
 def _get_auth(instance: Instance) -> Optional[httpx.BasicAuth]:
     if instance.has_basic_auth():
-        return requests.auth.HTTPBasicAuth(
-            username=instance.user, password=instance.password
-        )
+        return requests.auth.HTTPBasicAuth(username=instance.user, password=instance.password)
     return None
 
 
@@ -61,9 +59,7 @@ async def delete(url: str, instance: Instance) -> int:
         return 500
 
 
-async def post(
-    url: str, instance: Instance, data: Dict = {}
-) -> Tuple[int, Optional[Dict]]:
+async def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     async with httpx.AsyncClient(
         headers=_get_auth_header(instance), auth=_get_auth(instance)
     ) as client:
@@ -75,9 +71,8 @@ async def post(
             _handle_request_error(err)
         return 500, None
 
-async def put(
-    url: str, instance: Instance, data: Dict = {}
-) -> Tuple[int, Optional[Dict]]:
+
+async def put(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     async with httpx.AsyncClient(
         headers=_get_auth_header(instance), auth=_get_auth(instance)
     ) as client:
