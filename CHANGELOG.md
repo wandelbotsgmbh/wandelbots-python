@@ -1,17 +1,97 @@
 # CHANGELOG
 
 
+## v0.5.1 (2024-11-11)
+
+### Fixes
+
+* fix: update poetry lock ([`5061bb8`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5061bb89233a6adf69ba6cabf45bf77f6c7b641f))
+
+* fix: formatting ([`eb77415`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/eb77415dfb14d80f08b5c359be509738d234cde7))
+
+### Unknown
+
+* Merge pull request #9 from wandelbotsgmbh/feature/vscode-settings
+
+add vscode settings ([`0e4adba`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/0e4adbabc446c11000bf4b82635fd4a575524431))
+
+* Merge branch 'main' into feature/vscode-settings ([`6288122`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/6288122e06fa47753aff23d28c23ba5d16eaf17d))
+
+
+## v0.5.0 (2024-11-06)
+
+### Features
+
+* feat: headings ([`68bb7bd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/68bb7bd782fb28c68756a59fc1b95e542386ed58))
+
+### Fixes
+
+* fix: formatting of notebook ([`8c35853`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/8c35853e9841d28faeebb5ebc6a173c5228097cd))
+
+* fix: lint checks ([`7c28fac`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7c28fac05ee8dce9db454bdf47fc1f3b2c4d805a))
+
+* fix: reformat ([`24118f2`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/24118f21b248f621da5d89dc1cca913d72670fd1))
+
+### Unknown
+
+* Merge pull request #14 from wandelbotsgmbh/feature/headings
+
+feat: headings ([`2ffc6da`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/2ffc6da50b2a7b2b7c9e8bb1cfa4d489908094e0))
+
+* test settings for vscode (#13)
+
+Co-authored-by: André Kühnert <andre.kuehnert@wandelbots.com> ([`78bc1de`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/78bc1de030ba8e7cff03509464f518f9c57499c7))
+
+* Merge pull request #12 from wandelbotsgmbh/feature/oauth
+
+Feature/oauth ([`a3d63d6`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a3d63d6e7f6d43489093ced1687cf2a03916ad4c))
+
+* integration tests not running ([`ee944a3`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/ee944a3da6b367cde758103726f158f699c876c6))
+
+* integration tests with basic possible ([`a0805b7`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a0805b756c0285b4d80818be502aa772501ae32f))
+
+* updated notebook ([`c5626df`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/c5626df7fe0e2003d07732b283f39f7a5ed5a03e))
+
+* formatting ([`5c7777c`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5c7777c0c3ab5a985944fdd321c7f6f0dc066712))
+
+* added update wabo client ([`78f2bc3`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/78f2bc3adcea2834febf439882fc734084b2a69f))
+
+* handle basic and token ([`a75bda8`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a75bda8f91fb826571c42224681c12b9171fa692))
+
+* provide user and pwd ([`70fd0f5`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/70fd0f555e4349504df028eb48ab175aded52b32))
+
+* renaming ([`d8dbc85`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/d8dbc8580bd6b772c9c4a4c7d4fd8650924e3bac))
+
+* use token ([`4f4d46d`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4f4d46ddbe2d12c0676cfb02f703cc6a2fad107c))
+
+* adjust examples ([`2dedd59`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/2dedd592f40b2b5e31589357314150070c8c8123))
+
+* Merge branch 'main' into feature/vscode-settings ([`8845434`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/884543428c50382d72943b911e7a2a08d749d541))
+
+
 ## v0.4.1 (2024-10-23)
 
 ### Fixes
 
 * fix: fetch values from api ([`202b976`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/202b976313cbd862f8fc31a4b6a9857762bc4c54))
 
+* fix: fetch values from api ([`55a6f5c`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/55a6f5c7fa58083d44f892b72f82b85bbf7ba2a7))
+
+* fix: check ([`eca8237`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/eca8237a29ae0bd6191ad756e03994d9f884eb2b))
+
+* fix: check notebooks ([`4a9f3bd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4a9f3bd295fade73b04c78fd0853a857a4b2bce7))
+
+* fix: reformat ([`872395b`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/872395b081076cf29838e2011ad4c05d70cdd4e8))
+
+* fix: apply formatting and linting ([`5bb6687`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5bb6687ae37cd7ca12bb65c3e7a18bab70802f8a))
+
 ### Unknown
 
 * Merge pull request #10 from wandelbotsgmbh/feature/update-jupyter
 
 fix: fetch values from api ([`4f77fc7`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4f77fc7e2c447aa87f7fe26f3976d1ec85b4620d))
+
+* add vscode settings ([`eb251d5`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/eb251d5945eb76ee535a11fe5742b577939d1f9c))
 
 
 ## v0.4.0 (2024-10-22)

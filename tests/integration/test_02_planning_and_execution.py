@@ -12,6 +12,7 @@ async def test_motion_planning_and_execution():
 
     instance = Instance(
         url=os.getenv("WANDELAPI_BASE_URL"),
+        access_token=os.getenv("NOVA_ACCESS_TOKEN"),
         user=os.getenv("NOVA_USERNAME"),
         password=os.getenv("NOVA_PASSWORD"),
     )
@@ -35,9 +36,7 @@ async def test_motion_planning_and_execution():
         planner.line(pose=current_pose),
         planner.jptp(joints=home),
     ]
-    plan_result = planner.plan(
-        start_joints=motion_group.current_joints(), trajectory=trajectory
-    )
+    plan_result = planner.plan(start_joints=motion_group.current_joints(), trajectory=trajectory)
 
     # Check if the motion plan was successful
     assert plan_result.motion is not None, "Failed to plan motion"
@@ -45,9 +44,7 @@ async def test_motion_planning_and_execution():
     # Execute planned motion
     async def execute_in_background(motion: str, speed: int):
         try:
-            async for move_response in motion_group.execute_motion_stream_async(
-                motion, speed
-            ):
+            async for move_response in motion_group.execute_motion_stream_async(motion, speed):
                 print(move_response)
         except MotionExecutionInterruptedError:
             print("Motion execution was interrupted")

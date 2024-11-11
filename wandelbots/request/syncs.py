@@ -1,3 +1,4 @@
+import httpx
 import requests
 from typing import Dict, Tuple, Optional
 from wandelbots.util.logger import _get_logger
@@ -7,11 +8,15 @@ from wandelbots.core.instance import Instance
 __logger = _get_logger(__name__)
 
 
-def _get_auth(instance: Instance) -> Optional[requests.auth.HTTPBasicAuth]:
-    if instance.has_auth():
-        return requests.auth.HTTPBasicAuth(
-            username=instance.user, password=instance.password
-        )
+def _get_auth_header(instance: Instance) -> Optional[Dict[str, str]]:
+    if instance.has_access_token():
+        return {"Authorization": f"Bearer {instance.access_token}"}
+    return None
+
+
+def _get_auth(instance: Instance) -> Optional[httpx.BasicAuth]:
+    if instance.has_basic_auth():
+        return requests.auth.HTTPBasicAuth(username=instance.user, password=instance.password)
     return None
 
 
@@ -20,9 +25,7 @@ def _handle_request_error(err):
         if err.response.status_code == 401:
             __logger.error("401 Unauthorized access. Check your credentials.")
         else:
-            __logger.error(
-                f"HTTP error occurred: {err} - Response content: {err.response.text}"
-            )
+            __logger.error(f"HTTP error occurred: {err} - Response content: {err.response.text}")
     elif isinstance(err, requests.ConnectionError):
         __logger.error(f"Connection error occurred: {err}")
     elif isinstance(err, requests.Timeout):
@@ -33,7 +36,9 @@ def _handle_request_error(err):
 
 def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
     try:
-        response = requests.get(url, timeout=TIMEOUT, auth=_get_auth(instance))
+        response = requests.get(
+            url, timeout=TIMEOUT, headers=_get_auth_header(instance), auth=_get_auth(instance)
+        )
         response.raise_for_status()
         return response.status_code, response.json()
     except requests.RequestException as err:
@@ -43,7 +48,9 @@ def get(url: str, instance: Instance) -> Tuple[int, Optional[Dict]]:
 
 def delete(url: str, instance: Instance) -> int:
     try:
-        response = requests.delete(url, timeout=TIMEOUT, auth=_get_auth(instance))
+        response = requests.delete(
+            url, timeout=TIMEOUT, headers=_get_auth_header(instance), auth=_get_auth(instance)
+        )
         response.raise_for_status()
         return response.status_code
     except requests.RequestException as err:
@@ -54,7 +61,11 @@ def delete(url: str, instance: Instance) -> int:
 def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     try:
         response = requests.post(
-            url, json=data, timeout=TIMEOUT, auth=_get_auth(instance)
+            url,
+            json=data,
+            timeout=TIMEOUT,
+            headers=_get_auth_header(instance),
+            auth=_get_auth(instance),
         )
         response.raise_for_status()
         return response.status_code, response.json()
@@ -66,7 +77,11 @@ def post(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[D
 def put(url: str, instance: Instance, data: Dict = {}) -> Tuple[int, Optional[Dict]]:
     try:
         response = requests.put(
-            url, json=data, timeout=TIMEOUT, auth=_get_auth(instance)
+            url,
+            json=data,
+            timeout=TIMEOUT,
+            headers=_get_auth_header(instance),
+            auth=_get_auth(instance),
         )
         response.raise_for_status()
         return response.status_code, response.json()

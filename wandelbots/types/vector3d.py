@@ -3,7 +3,6 @@ from wandelbots_api_client.models import Vector3d
 
 
 class Vector3d(Vector3d):
-
     x: float = 0
     y: float = 0
     z: float = 0
@@ -13,11 +12,7 @@ class Vector3d(Vector3d):
         """Create a Vector3d from a list of 3 elements. Assumes the list is in the order [x, y, z]
         and units are in mm."""
         assert len(list) == 3
-        return Vector3d(
-            x=list[0],
-            y=list[1],
-            z=list[2],
-        )
+        return Vector3d(x=list[0], y=list[1], z=list[2])
 
     def as_array(self) -> np.ndarray:
         """Return the vector as a NumPy array."""

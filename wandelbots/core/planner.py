@@ -69,9 +69,7 @@ class Planner:
         )
         return self._handle_plan_response(response)
 
-    async def _plan_with_rae_async(
-        self, plan_request: PlanRequest
-    ) -> PlanSuccessfulResponse:
+    async def _plan_with_rae_async(self, plan_request: PlanRequest) -> PlanSuccessfulResponse:
         response = await motion_api.plan_motion_async(
             instance=self.instance, cell=self.cell, plan_request=plan_request
         )

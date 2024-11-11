@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 from dotenv import load_dotenv
 
@@ -11,9 +11,7 @@ setup_logging(level=logging.INFO)
 
 
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"),
-    user=os.getenv("NOVA_USERNAME"),
-    password=os.getenv("NOVA_PASSWORD"),
+    url=os.getenv("WANDELAPI_BASE_URL"), access_token=os.getenv("NOVA_ACCESS_TOKEN")
 )
 
 my_robot = MotionGroup(
@@ -24,7 +22,6 @@ my_robot = MotionGroup(
 )
 
 if __name__ == "__main__":
-
     # Available TCPs on the controller
     print(my_robot.tcps())
 
