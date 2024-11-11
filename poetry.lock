@@ -125,13 +125,13 @@ speedups = ["Brotli", "aiodns (>=3.2.0)", "brotlicffi"]
 
 [[package]]
 name = "aiohttp-retry"
-version = "2.9.0"
+version = "2.9.1"
 description = "Simple retry client for aiohttp"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "aiohttp_retry-2.9.0-py3-none-any.whl", hash = "sha256:7661af92471e9a96c69d9b8f32021360272073397e6a15bc44c1726b12f46056"},
-    {file = "aiohttp_retry-2.9.0.tar.gz", hash = "sha256:92c47f1580040208bac95d9a8389a87227ef22758530f2e3f4683395e42c41b5"},
+    {file = "aiohttp_retry-2.9.1-py3-none-any.whl", hash = "sha256:66d2759d1921838256a05a3f80ad7e724936f083e35be5abb5e16eed6be6dc54"},
+    {file = "aiohttp_retry-2.9.1.tar.gz", hash = "sha256:8eb75e904ed4ee5c2ec242fefe85bf04240f685391c4879d8f541d6028ff01f1"},
 ]
 
 [package.dependencies]
@@ -460,6 +460,17 @@ files = [
     {file = "charset_normalizer-3.4.0-cp39-cp39-win_amd64.whl", hash = "sha256:95c3c157765b031331dd4db3c775e58deaee050a3042fcad72cbc4189d7c8dca"},
     {file = "charset_normalizer-3.4.0-py3-none-any.whl", hash = "sha256:fe9f97feb71aa9896b81973a7bbada8c49501dc73e58a10fcef6663af95e5079"},
     {file = "charset_normalizer-3.4.0.tar.gz", hash = "sha256:223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"},
+]
+
+[[package]]
+name = "click"
+version = "8.1.7"
+description = "Composable command line interface toolkit"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "click-8.1.7-py3-none-any.whl", hash = "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28"},
+    {file = "click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"},
 ]
 
 [[package]]
@@ -1977,13 +1988,13 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "wandelbots-api-client"
-version = "24.5.0"
+version = "24.8.0.dev17"
 description = "Wandelbots Python Client: Interact with robots in an easy and intuitive way."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "wandelbots_api_client-24.5.0-py3-none-any.whl", hash = "sha256:e1ff422f68d9ae889426c097f21ffed24e7503e7b7a0e81a8ea274225a9e3647"},
-    {file = "wandelbots_api_client-24.5.0.tar.gz", hash = "sha256:e760e62d45a343641153ef70ff807f914c6dc46839c796a7acb3baa49cb8bb25"},
+    {file = "wandelbots_api_client-24.8.0.dev17-py3-none-any.whl", hash = "sha256:5f6db7310a74c89d63e4ee80ccb0fe247c8217e71305f0c81b0cfffa136d36aa"},
+    {file = "wandelbots_api_client-24.8.0.dev17.tar.gz", hash = "sha256:0a12566f4b579a7123027199557054fe33e36a57a868d8a752ba2c58db813cde"},
 ]
 
 [package.dependencies]
@@ -2223,4 +2234,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "9a830bc3ac3d3e9fd4dd59b5a2be3fe867e57eab09c6d788b353ad959e174b87"
+content-hash = "af9abc314566c68ff619a3eecb692bdbaaa9050786c32af39075681a6903228e"

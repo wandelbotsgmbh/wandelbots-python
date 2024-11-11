@@ -1,6 +1,47 @@
 # CHANGELOG
 
 
+## v0.5.0 (2024-11-06)
+
+### Features
+
+* feat: headings ([`68bb7bd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/68bb7bd782fb28c68756a59fc1b95e542386ed58))
+
+### Unknown
+
+* Merge pull request #14 from wandelbotsgmbh/feature/headings
+
+feat: headings ([`2ffc6da`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/2ffc6da50b2a7b2b7c9e8bb1cfa4d489908094e0))
+
+* test settings for vscode (#13)
+
+Co-authored-by: André Kühnert <andre.kuehnert@wandelbots.com> ([`78bc1de`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/78bc1de030ba8e7cff03509464f518f9c57499c7))
+
+* Merge pull request #12 from wandelbotsgmbh/feature/oauth
+
+Feature/oauth ([`a3d63d6`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a3d63d6e7f6d43489093ced1687cf2a03916ad4c))
+
+* integration tests not running ([`ee944a3`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/ee944a3da6b367cde758103726f158f699c876c6))
+
+* integration tests with basic possible ([`a0805b7`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a0805b756c0285b4d80818be502aa772501ae32f))
+
+* updated notebook ([`c5626df`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/c5626df7fe0e2003d07732b283f39f7a5ed5a03e))
+
+* formatting ([`5c7777c`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5c7777c0c3ab5a985944fdd321c7f6f0dc066712))
+
+* added update wabo client ([`78f2bc3`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/78f2bc3adcea2834febf439882fc734084b2a69f))
+
+* handle basic and token ([`a75bda8`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/a75bda8f91fb826571c42224681c12b9171fa692))
+
+* provide user and pwd ([`70fd0f5`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/70fd0f555e4349504df028eb48ab175aded52b32))
+
+* renaming ([`d8dbc85`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/d8dbc8580bd6b772c9c4a4c7d4fd8650924e3bac))
+
+* use token ([`4f4d46d`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4f4d46ddbe2d12c0676cfb02f703cc6a2fad107c))
+
+* adjust examples ([`2dedd59`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/2dedd592f40b2b5e31589357314150070c8c8123))
+
+
 ## v0.4.1 (2024-10-23)
 
 ### Fixes

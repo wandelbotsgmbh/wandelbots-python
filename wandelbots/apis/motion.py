@@ -76,7 +76,12 @@ async def plan_motion_async(instance: Instance, cell: str, plan_request: PlanReq
 
 def _get_wb_api_client(instance: Instance) -> wb_api.ApiClient:
     _url = f"{instance.url}/api/v1"
-    _conf = wb_api.Configuration(host=_url, username=instance.user, password=instance.password)
+    _conf = wb_api.Configuration(
+        host=_url,
+        username=instance.user,
+        password=instance.password,
+        access_token=instance.access_token,
+    )
     return wb_api.ApiClient(_conf)
 
 

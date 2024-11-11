@@ -25,7 +25,7 @@ jobs:
           poetry install
           mkdir envs
           touch envs/.env.tests
-          echo "WANDELAPI_BASE_URL=test.instance.wandelbots.io" > envs/.env.tests
+          echo "WANDELAPI_BASE_URL=test.instance.mock.io" > envs/.env.tests
           echo "CELL_ID=cell" >> envs/.env.tests
           echo "MOTION_GROUP=0@virtual-robot" >> envs/.env.tests
           echo "TCP=Flange" >> envs/.env.tests
