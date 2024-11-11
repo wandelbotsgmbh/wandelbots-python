@@ -42,6 +42,10 @@ allow_zero_version = true
 no_git_verify = false
 tag_format = "v{version}"
 
+[tool.semantic_release.branches]
+main = { release = true }
+feature/* = { prerelease = true }
+
 [tool.semantic_release.branches.main]
 match = "(main|master)"
 prerelease_token = "rc"
