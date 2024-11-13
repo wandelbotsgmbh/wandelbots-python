@@ -50,7 +50,7 @@ async def main():
     # thus yielding the current execution state.
     # Here we just playback the same motion backwards
     async for state in my_robot.execute_motion_stream_async(
-        motion=motion, speed=10, direction="backward"
+        plan_result == plan_result, speed=10, direction="backward"
     ):
         time_until_complete = state.time_to_end
         print(f"Motion done in: {time_until_complete/1000} s")
