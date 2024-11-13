@@ -60,7 +60,7 @@ async def main():
 
     # Execute the motion asynchronously without yielding current execution state
     print(f"Before execution {my_robot.get_io(DEFAULT_IO)=}")
-    await my_robot.execute_motion_async(plan_result=plan_result, speed=10, io_actions=io_actions)
+    await my_robot.execute_motion_async(plan_result=plan_result, speed=10)
     print(f"After execution {my_robot.get_io(DEFAULT_IO)=}")
 
 
