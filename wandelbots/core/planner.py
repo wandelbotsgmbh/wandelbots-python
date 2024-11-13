@@ -21,6 +21,13 @@ from wandelbots.util.logger import _get_logger
 CommandType = Union[Command, IOValue]
 
 
+class PlanResult:
+    def __init__(self, plan_response: PlanSuccessfulResponse, io_actions: tuple[SetIO, ...] = ()):
+        self.plan_response = plan_response
+        self.io_actions = io_actions
+        self.motion = plan_response.motion
+
+
 class Planner:
     def __init__(self, motion_group: MotionGroup):
         self.logger = _get_logger(__name__)
@@ -85,14 +92,6 @@ class Planner:
 
     def set_io(self, key: str, value: IOType) -> IOValue:
         return IOValue.from_key_value(key=key, value=value)
-
-    class PlanResult:
-        def __init__(
-            self, plan_response: PlanSuccessfulResponse, io_actions: tuple[SetIO, ...] = ()
-        ):
-            self.plan_response = plan_response
-            self.io_actions = io_actions
-            self.motion = plan_response.motion
 
     def plan(
         self, trajectory: list[Union[Command, IOValue]], start_joints: list[float], tcp: str = None

@@ -9,7 +9,7 @@ from wandelbots.apis import motion as motion_api
 from wandelbots.apis import motion_group as motion_group_api
 from wandelbots.apis import motion_group_infos as motion_group_infos_api
 from wandelbots.core.instance import Instance
-from wandelbots.core.planner import Planner
+from wandelbots.core.planner import PlanResult
 from wandelbots.exceptions import MotionGroupConnectionException
 from wandelbots.types import IOValue, MoveResponse, Pose
 from wandelbots.util.logger import _get_logger
@@ -136,7 +136,7 @@ class MotionGroup:
 
     async def execute_motion_stream_async(
         self,
-        plan_result: Planner.PlanResult,
+        plan_result: PlanResult,
         speed: int,
         response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",
@@ -171,7 +171,7 @@ class MotionGroup:
 
     async def execute_motion_async(
         self,
-        plan_result: Planner.PlanResult,
+        plan_result: PlanResult,
         speed: int,
         response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",
@@ -196,7 +196,7 @@ class MotionGroup:
 
     def execute_motion(
         self,
-        plan_result: Planner.PlanResult,
+        plan_result: PlanResult,
         speed: int,
         response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",

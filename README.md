@@ -116,7 +116,7 @@ For further examples take a look at the [examples](https://github.com/wandelbots
 ### Testing
 
 ```bash
-$ poetry run pytest -rs -v
+poetry run pytest -rs -v
 ```
 
 #### Integration Tests
