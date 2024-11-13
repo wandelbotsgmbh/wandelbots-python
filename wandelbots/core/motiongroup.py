@@ -9,7 +9,7 @@ from wandelbots.apis import motion as motion_api
 from wandelbots.apis import motion_group as motion_group_api
 from wandelbots.apis import motion_group_infos as motion_group_infos_api
 from wandelbots.core.instance import Instance
-from wandelbots.core.planner import PlanResult
+from wandelbots.core.plan_result import PlanResult
 from wandelbots.exceptions import MotionGroupConnectionException
 from wandelbots.types import IOValue, MoveResponse, Pose
 from wandelbots.util.logger import _get_logger
