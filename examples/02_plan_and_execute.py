@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     # Try to plan the desired trajectory
     try:
-        plan_result = planner.plan(trajectory=trajectory, start_joints=my_robot.current_joints())
+        plan_result, _ = planner.plan(trajectory=trajectory, start_joints=my_robot.current_joints())
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
         print(f"Planning failed: {e}")
         exit()

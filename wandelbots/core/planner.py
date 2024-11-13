@@ -1,17 +1,24 @@
-from wandelbots.util.logger import _get_logger
+from typing import Union
+
+from wandelbots import MotionGroup
+from wandelbots.apis import motion as motion_api
+from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
 from wandelbots.types import (
-    Pose,
     Command,
+    CommandSettings,
+    IOType,
+    IOValue,
     Joints,
+    PlanFailedOnTrajectoryResponse,
     PlanRequest,
     PlanResponse,
     PlanSuccessfulResponse,
-    PlanFailedOnTrajectoryResponse,
-    CommandSettings,
+    Pose,
+    SetIO,
 )
-from wandelbots.apis import motion as motion_api
-from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
-from wandelbots import MotionGroup
+from wandelbots.util.logger import _get_logger
+
+CommandType = Union[Command, IOValue]
 
 
 class Planner:
@@ -76,16 +83,44 @@ class Planner:
     def cptp(self, pose: Pose, settings: CommandSettings = None) -> Command:
         return Command(cartesian_ptp=pose, settings=settings)
 
+    def set_io(self, key: str, value: IOType) -> IOValue:
+        return IOValue.from_key_value(key=key, value=value)
+
     def plan(
-        self, trajectory: list[Command], start_joints: list[float], tcp: str = None
-    ) -> PlanSuccessfulResponse:
+        self, trajectory: list[Union[Command, IOValue]], start_joints: list[float], tcp: str = None
+    ) -> Union[PlanSuccessfulResponse, tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]]:
         tcp = self._from_default_tcp(tcp)
-        rae_plan_request = self._create_plan_request(tcp, trajectory, start_joints)
-        return self._plan_with_rae(rae_plan_request)
+        move_commands, io_actions = self._resolve_commands(trajectory)
+        rae_plan_request = self._create_plan_request(tcp, move_commands, start_joints)
+        plan_response = self._plan_with_rae(rae_plan_request)
+        if not io_actions:
+            return plan_response
+        return plan_response, io_actions
 
     async def plan_async(
-        self, trajectory: list[Command], start_joints: list[float], tcp: str = None
-    ) -> PlanSuccessfulResponse:
+        self, trajectory: list[CommandType], start_joints: list[float], tcp: str = None
+    ) -> Union[PlanSuccessfulResponse, tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]]:
         tcp = self._from_default_tcp(tcp)
-        rae_plan_request = self._create_plan_request(tcp, trajectory, start_joints)
-        return await self._plan_with_rae_async(rae_plan_request)
+        move_commands, io_actions = self._resolve_commands(trajectory)
+        rae_plan_request = self._create_plan_request(tcp, move_commands, start_joints)
+        plan_response = await self._plan_with_rae_async(rae_plan_request)
+        if not io_actions:
+            return plan_response
+        return plan_response, io_actions
+
+    @staticmethod
+    def _resolve_commands(trajectory: list[CommandType]) -> tuple[list[Command], tuple[SetIO, ...]]:
+        """Split-up input trajectory into move commands and io actions."""
+
+        path_param = 0
+        move_trajectory: list[Command] = []
+        io_actions: list[SetIO] = []
+
+        for command in trajectory:
+            if isinstance(command, IOValue):
+                io_actions.append(SetIO(io=command, location=path_param))
+            else:
+                move_trajectory.append(command)
+                path_param += 1
+
+        return move_trajectory, tuple(io_actions)

@@ -81,7 +81,13 @@ This will create a `dist/` directory with the built package (`.tar.gz` and `.whl
 #### Installation
 
 ```bash
-pip install dist/wandelbots-python-0.5.0-py3-none-any.whl
+pip install wandelbots
+```
+
+##### Install a development branch in Poetry
+
+```bash
+wandelbots = { git = "https://github.com/wandelbotsgmbh/wandelbots-python.git", branch = "feature/set-ios-on-path" }
 ```
 
 ### Basic Usage
@@ -115,7 +121,7 @@ $ poetry run pytest -rs -v
 
 #### Integration Tests
 
-By default integration tests will be skipped. 
+By default integration tests will be skipped.
 To run them localy create an env file at `envs/.env.tests` with your values.
 
 ```txt

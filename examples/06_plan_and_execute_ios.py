@@ -1,20 +1,25 @@
-import os
-import logging
 import asyncio
+import logging
+import os
 
 from dotenv import load_dotenv
 
 from wandelbots import Instance, MotionGroup, Planner
-from wandelbots.types import Pose, Vector3d
 from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
+from wandelbots.types import Pose
 from wandelbots.util.logger import setup_logging
 
 load_dotenv()  # Load environment variables from .env
 setup_logging(level=logging.INFO)
 
 
+DEFAULT_IO = "digital_out[0]"
+
+
 my_instance = Instance(
-    url=os.getenv("WANDELAPI_BASE_URL"), access_token=os.getenv("NOVA_ACCESS_TOKEN")
+    url=os.getenv("WANDELAPI_BASE_URL"),
+    user=os.getenv("NOVA_USERNAME"),
+    password=os.getenv("NOVA_PASSWORD"),
 )
 
 my_robot = MotionGroup(
@@ -28,11 +33,21 @@ my_robot = MotionGroup(
 async def main():
     # Get current TCP pose and offset it slightly along the z-axis
     current_pose: Pose = my_robot.current_tcp_pose()
-    target_pose = current_pose.translate(Vector3d(z=100))
+    target_pose = current_pose * Pose.from_list([0, 0, 100, 0, 0, 0])
 
     # Plan a line motion to the target pose
     planner = Planner(motion_group=my_robot)
-    trajectory = [planner.line(pose=target_pose)]
+    trajectory = [
+        planner.set_io(key=DEFAULT_IO, value=True),
+        planner.line(pose=target_pose),
+        planner.set_io(key=DEFAULT_IO, value=False),
+        planner.line(pose=current_pose),
+        planner.set_io(key=DEFAULT_IO, value=True),
+        planner.line(pose=target_pose),
+        planner.set_io(key=DEFAULT_IO, value=False),
+        planner.line(pose=current_pose),
+        planner.set_io(key=DEFAULT_IO, value=True),
+    ]
 
     # Try to plan the desired trajectory asynchronously
     try:
@@ -45,16 +60,9 @@ async def main():
 
     # Execute the motion asynchronously without yielding current execution state
     motion = plan_result.motion
+    print(f"Before execution {my_robot.get_io(DEFAULT_IO)=}")
     await my_robot.execute_motion_async(motion=motion, speed=10, io_actions=io_actions)
-
-    # A motion can also be executed leveraging a bi-directional approach,
-    # thus yielding the current execution state.
-    # Here we just playback the same motion backwards
-    async for state in my_robot.execute_motion_stream_async(
-        motion=motion, speed=10, direction="backward"
-    ):
-        time_until_complete = state.time_to_end
-        print(f"Motion done in: {time_until_complete/1000} s")
+    print(f"After execution {my_robot.get_io(DEFAULT_IO)=}")
 
 
 if __name__ == "__main__":
