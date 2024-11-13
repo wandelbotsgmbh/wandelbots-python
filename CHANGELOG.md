@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.5.2 (2024-11-13)
+
+### Fixes
+
+* fix: return only PlanSuccessfulResponse if no io_action is passed ([`5b73b78`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5b73b784050db20a76f69bc1e230eb83d7fed8ce))
+
+* fix: formatting ([`878a474`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/878a47445165a7a3732c864757ac471f3d53f0d3))
+
+### Unknown
+
+* Merge pull request #11 from wandelbotsgmbh/feature/set-ios-on-path
+
+Feature/set ios on path ([`7eebdd7`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7eebdd795a1d4acd82c2587edd029ed6cddb749f))
+
+* doc: add readme guide on how to install a github branch ([`172dc0d`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/172dc0df22b4bea4335ed0180bf568c7ae595e38))
+
+* Merge branch 'main' into feature/set-ios-on-path ([`b9473cd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/b9473cdb078a9e6866a060bb483cfad735632a4b))
+
+
 ## v0.5.1 (2024-11-11)
 
 ### Fixes
@@ -24,6 +43,10 @@ add vscode settings ([`0e4adba`](https://github.com/wandelbotsgmbh/wandelbots-py
 
 * feat: headings ([`68bb7bd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/68bb7bd782fb28c68756a59fc1b95e542386ed58))
 
+* feat: adapt tests and examples ([`ccbee2e`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/ccbee2e1e71118f63927af0a193e420b03abee82))
+
+* feat: implement io on path logic ([`863db6b`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/863db6b5a57536624fb9ba50de857758e2463db1))
+
 ### Fixes
 
 * fix: formatting of notebook ([`8c35853`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/8c35853e9841d28faeebb5ebc6a173c5228097cd))
@@ -31,6 +54,16 @@ add vscode settings ([`0e4adba`](https://github.com/wandelbotsgmbh/wandelbots-py
 * fix: lint checks ([`7c28fac`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7c28fac05ee8dce9db454bdf47fc1f3b2c4d805a))
 
 * fix: reformat ([`24118f2`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/24118f21b248f621da5d89dc1cca913d72670fd1))
+
+* fix: fetch values from api ([`55a6f5c`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/55a6f5c7fa58083d44f892b72f82b85bbf7ba2a7))
+
+* fix: check ([`eca8237`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/eca8237a29ae0bd6191ad756e03994d9f884eb2b))
+
+* fix: check notebooks ([`4a9f3bd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4a9f3bd295fade73b04c78fd0853a857a4b2bce7))
+
+* fix: reformat ([`872395b`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/872395b081076cf29838e2011ad4c05d70cdd4e8))
+
+* fix: apply formatting and linting ([`5bb6687`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5bb6687ae37cd7ca12bb65c3e7a18bab70802f8a))
 
 ### Unknown
 
@@ -68,6 +101,8 @@ Feature/oauth ([`a3d63d6`](https://github.com/wandelbotsgmbh/wandelbots-python/c
 
 * Merge branch 'main' into feature/vscode-settings ([`8845434`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/884543428c50382d72943b911e7a2a08d749d541))
 
+* add vscode settings ([`eb251d5`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/eb251d5945eb76ee535a11fe5742b577939d1f9c))
+
 
 ## v0.4.1 (2024-10-23)
 
@@ -75,23 +110,11 @@ Feature/oauth ([`a3d63d6`](https://github.com/wandelbotsgmbh/wandelbots-python/c
 
 * fix: fetch values from api ([`202b976`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/202b976313cbd862f8fc31a4b6a9857762bc4c54))
 
-* fix: fetch values from api ([`55a6f5c`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/55a6f5c7fa58083d44f892b72f82b85bbf7ba2a7))
-
-* fix: check ([`eca8237`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/eca8237a29ae0bd6191ad756e03994d9f884eb2b))
-
-* fix: check notebooks ([`4a9f3bd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4a9f3bd295fade73b04c78fd0853a857a4b2bce7))
-
-* fix: reformat ([`872395b`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/872395b081076cf29838e2011ad4c05d70cdd4e8))
-
-* fix: apply formatting and linting ([`5bb6687`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5bb6687ae37cd7ca12bb65c3e7a18bab70802f8a))
-
 ### Unknown
 
 * Merge pull request #10 from wandelbotsgmbh/feature/update-jupyter
 
 fix: fetch values from api ([`4f77fc7`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4f77fc7e2c447aa87f7fe26f3976d1ec85b4620d))
-
-* add vscode settings ([`eb251d5`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/eb251d5945eb76ee535a11fe5742b577939d1f9c))
 
 
 ## v0.4.0 (2024-10-22)
