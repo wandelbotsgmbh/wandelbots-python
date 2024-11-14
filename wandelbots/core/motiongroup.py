@@ -1,18 +1,17 @@
 import asyncio
-
-from typing import AsyncGenerator, Literal, Callable
 from contextlib import asynccontextmanager
-from wandelbots.types import MoveResponse, Pose, SetIO, IOValue
+from typing import AsyncGenerator, Callable, Literal
 
-from wandelbots.util.logger import _get_logger
-from wandelbots.core.instance import Instance
 from wandelbots.apis import controller as controller_api
+from wandelbots.apis import controller_io as controller_io_api
 from wandelbots.apis import device_configuration as device_configuration_api
 from wandelbots.apis import motion as motion_api
 from wandelbots.apis import motion_group as motion_group_api
 from wandelbots.apis import motion_group_infos as motion_group_infos_api
-from wandelbots.apis import controller_io as controller_io_api
+from wandelbots.core.instance import Instance
 from wandelbots.exceptions import MotionGroupConnectionException
+from wandelbots.types import IOValue, MoveResponse, Pose, SetIO
+from wandelbots.util.logger import _get_logger
 
 
 class MotionGroup:
@@ -201,8 +200,15 @@ class MotionGroup:
         direction: Literal["forward", "backward"] = "forward",
         callback: Callable[[MoveResponse], None] = None,
     ) -> None:
+        uri = self.instance.get_socket_uri_with_auth()
         motion_api.stream_motion(
-            self.instance, self.cell, motion, speed, response_rate_ms, direction, callback
+            uri,
+            self.cell,
+            plan_result.plan_response.motion,
+            speed,
+            response_rate_ms,
+            direction,
+            callback,
         )
 
     def is_executing(self) -> bool:

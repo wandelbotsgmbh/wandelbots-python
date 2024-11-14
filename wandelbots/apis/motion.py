@@ -146,8 +146,12 @@ def stream_motion(
     direction: Literal["forward", "backward"] = "forward",
     callback: Callable[[MoveResponse], None] = None,
 ) -> None:
-    uri = f"{instance.socket_uri}/cells/{cell}/motions/{motion}/execute{direction}"
-    uri += f"?playback_speed_in_percent={playback_speed}&response_rate={response_rate}"
+    additional_params = {
+        "playback_speed_in_percent": playback_speed,
+        "response_rate": response_rate,
+    }
+    uri = instance.get_socket_uri_with_auth(additional_params)
+    uri += f"/cells/{cell}/motions/{motion}/execute{direction}"
     logger.debug(f"Connecting to {uri}")
     with connect(uri) as socket:
         logger.debug(f"Connected to {uri}")
