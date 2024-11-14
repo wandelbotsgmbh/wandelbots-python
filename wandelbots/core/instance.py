@@ -45,7 +45,7 @@ class Instance:
     def socket_uri(self):
         return self.url.replace("http", "ws").replace("https", "wss")
 
-    def get_socket_uri_with_auth(self, additional_params: dict = None):
+    def get_socket_uri_with_auth(self, additional_params: dict = None, url: str = None):
         if self.has_basic_auth():
             _uri = self.socket_uri.replace("wss://", f"wss://{self.user}:{self.password}@")
         else:
@@ -58,7 +58,7 @@ class Instance:
             params.update(additional_params)
 
         query_string = urlencode(params)
-        return f"{_uri}/api/{self._api_version}?{query_string}"
+        return f"{_uri}/api/{self._api_version}/{url}?{query_string}"
 
     def _connect(self):
         self.logger.info(f"Connecting to {self.url}")

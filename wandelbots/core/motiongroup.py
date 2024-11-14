@@ -200,9 +200,8 @@ class MotionGroup:
         direction: Literal["forward", "backward"] = "forward",
         callback: Callable[[MoveResponse], None] = None,
     ) -> None:
-        uri = self.instance.get_socket_uri_with_auth()
         motion_api.stream_motion(
-            uri, self.cell, motion, speed, response_rate_ms, direction, callback
+            self.instance, self.cell, motion, speed, response_rate_ms, direction, callback
         )
 
     def is_executing(self) -> bool:
