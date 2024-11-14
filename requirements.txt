@@ -29,3 +29,4 @@ plotly>=5,<6
 bqplot
 
 python-dotenv
+websockets>14
