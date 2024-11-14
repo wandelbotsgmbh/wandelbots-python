@@ -202,13 +202,7 @@ class MotionGroup:
     ) -> None:
         uri = self.instance.get_socket_uri_with_auth()
         motion_api.stream_motion(
-            uri,
-            self.cell,
-            plan_result.plan_response.motion,
-            speed,
-            response_rate_ms,
-            direction,
-            callback,
+            uri, self.cell, motion, speed, response_rate_ms, direction, callback
         )
 
     def is_executing(self) -> bool:
