@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.5.5 (2024-11-15)
+
+### Fixes
+
+* fix: typo in example ([`2c8f746`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/2c8f74627545ad85ef9e8c1ee97a04e4606cfb99))
+
+
 ## v0.5.4 (2024-11-15)
 
 ### Unknown
