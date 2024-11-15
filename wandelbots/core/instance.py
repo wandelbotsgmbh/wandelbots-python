@@ -1,4 +1,4 @@
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 
 from wandelbots.util.logger import _get_logger
 
@@ -21,6 +21,7 @@ class Instance:
     def _parse_url(self, host: str) -> str:
         """remove any trailing slashes and validate scheme"""
         _url = host.rstrip("/")
+        parsed_url = urlparse(_url)
 
         if self.has_access_token() and self.has_basic_auth():
             raise ValueError("please choose either user and password or access token access")
@@ -35,7 +36,7 @@ class Instance:
                 raise ValueError(
                     "Access token and/or user and password are not required for http connections"
                 )
-        elif "wandelbots.io" in _url:
+        elif parsed_url.hostname and parsed_url.hostname.endswith(".wandelbots.io"):
             _url = "https://" + _url
         else:  # assume http
             _url = "http://" + _url
