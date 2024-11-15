@@ -1,3 +1,4 @@
+import warnings
 from typing import Union
 
 from wandelbots.apis import motion as motion_api
@@ -78,11 +79,57 @@ class Planner:
     def line(self, pose: Pose, settings: CommandSettings = None) -> Command:
         return Command(line=pose, settings=settings)
 
-    def jptp(self, joints: Joints, settings: CommandSettings = None) -> Command:
+    def joint_ptp(self, joints: Joints, settings: CommandSettings = None) -> Command:
+        """
+        Create a point-to-point (ptp) command in joint space.
+
+        PTP means point-to-point and can vary in implementation by different robot OEMs.
+        In NOVA, ptp always performs a linear motion in joint space, regardless of the robot
+        being controlled or the speed of movement. This may differ from what OEM code produces
+        for the "same" ptp command.
+        """
         return Command(joint_ptp=Joints(joints=joints), settings=settings)
 
-    def cptp(self, pose: Pose, settings: CommandSettings = None) -> Command:
+    def cartesian_ptp(self, pose: Pose, settings: CommandSettings = None) -> Command:
+        """
+        Create a point-to-point (ptp) command in Cartesian space.
+
+        PTP means point-to-point and can vary in implementation by different robot OEMs.
+        In NOVA, ptp always performs a linear motion in joint space, regardless of the robot
+        being controlled or the speed of movement. This may differ from what OEM code produces
+        for the "same" ptp command.
+        """
         return Command(cartesian_ptp=pose, settings=settings)
+
+    def jptp(self, joints: Joints, settings: CommandSettings = None) -> Command:
+        """
+        Deprecated: Use joint_ptp instead.
+
+        Create a point-to-point (ptp) command in joint space.
+
+        PTP means point-to-point and can vary in implementation by different robot OEMs.
+        In NOVA, ptp always performs a linear motion in joint space, regardless of the robot
+        being controlled or the speed of movement. This may differ from what OEM code produces
+        for the "same" ptp command.
+        """
+        warnings.warn("jptp is deprecated, use joint_ptp instead", DeprecationWarning, stacklevel=2)
+        return self.joint_ptp(joints, settings)
+
+    def cptp(self, pose: Pose, settings: CommandSettings = None) -> Command:
+        """
+        Deprecated: Use cartesian_ptp instead.
+
+        Create a point-to-point (ptp) command in Cartesian space.
+
+        PTP means point-to-point and can vary in implementation by different robot OEMs.
+        In NOVA, ptp always performs a linear motion in joint space, regardless of the robot
+        being controlled or the speed of movement. This may differ from what OEM code produces
+        for the "same" ptp command.
+        """
+        warnings.warn(
+            "cptp is deprecated, use cartesian_ptp instead", DeprecationWarning, stacklevel=2
+        )
+        return self.cartesian_ptp(pose, settings)
 
     def set_io(self, key: str, value: IOType) -> IOValue:
         return IOValue.from_key_value(key=key, value=value)
