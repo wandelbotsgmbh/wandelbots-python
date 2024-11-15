@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from wandelbots.util.logger import _get_logger
 
 
@@ -41,13 +43,22 @@ class Instance:
 
     @property
     def socket_uri(self):
-        if not self.has_auth():
-            _uri = self.url.replace("http", "ws").replace("https", "wss")
-            return f"{_uri}/api/{self._api_version}"
+        return self.url.replace("http", "ws").replace("https", "wss")
+
+    def get_socket_uri_with_auth(self, additional_params: dict = None, url: str = None):
+        if self.has_basic_auth():
+            _uri = self.socket_uri.replace("wss://", f"wss://{self.user}:{self.password}@")
         else:
-            _url_no_scheme = self.url.split("://")[1]
-            _uri = f"wss://{_url_no_scheme}"
-            return f"{_uri}/api/{self._api_version}"
+            _uri = self.socket_uri
+        params = {}
+        if self.has_access_token():
+            params["token"] = self.access_token
+
+        if additional_params:
+            params.update(additional_params)
+
+        query_string = urlencode(params)
+        return f"{_uri}/api/{self._api_version}/{url}?{query_string}"
 
     def _connect(self):
         self.logger.info(f"Connecting to {self.url}")
