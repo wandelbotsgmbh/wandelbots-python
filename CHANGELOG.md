@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.5.4 (2024-11-15)
+
+### Unknown
+
+* Merge pull request #17 from wandelbotsgmbh/fix/websocket-auth
+
+fix: support auth for websocket handling ([`7616f94`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7616f945e38618495eca3cda71a8569f35bbdd94))
+
+* Merge branch 'main' into fix/websocket-auth ([`1953ecd`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/1953ecd6d618732879fcf59d0e3059a51070cb38))
+
+
 ## v0.5.3 (2024-11-15)
 
 ### Fixes
@@ -14,6 +25,16 @@
 * fix: use plan_result in example 3 ([`5863656`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5863656cd1f1ea89477179ac4b05d1e6f0e3178a))
 
 * fix: remove io_action ([`5ac89ee`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5ac89eebe9e18cfbfb44a8ece7f651f7d55a5555))
+
+* fix: update wandelbots_api_client ([`e4ccdf9`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/e4ccdf99df37d2800ef7f1ea00203637503392ef))
+
+* fix: update websockets to 14 ([`10f3dd7`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/10f3dd749119f4ec65f1c53b0b0314824355f75d))
+
+* fix: websocket auth handling ([`d6301a4`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/d6301a42b9ec5c35d8a2275b382b38b90775bf4b))
+
+* fix: use still motion string ([`2867105`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/2867105149a18fb0be7d8751acddcfe6c5c3a781))
+
+* fix: support auth for websocket handling ([`c7882a8`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/c7882a8e8d380c1f16ecd918f40621a51e7d0525))
 
 ### Refactoring
 
