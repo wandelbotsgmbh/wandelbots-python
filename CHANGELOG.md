@@ -1,6 +1,31 @@
 # CHANGELOG
 
 
+## v0.5.3 (2024-11-15)
+
+### Fixes
+
+* fix: move plan result into own file ([`c5e90ac`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/c5e90ac280b142706fde22edb39578a938d10fc1))
+
+* fix: move planResult out of class ([`ee56888`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/ee568882cc8673df40cec13d7a435ae815ebd877))
+
+* fix: adapt integration test ([`4cd6654`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4cd6654c39208ed91b641c5fc463ba6c9d97cb04))
+
+* fix: use plan_result in example 3 ([`5863656`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5863656cd1f1ea89477179ac4b05d1e6f0e3178a))
+
+* fix: remove io_action ([`5ac89ee`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/5ac89eebe9e18cfbfb44a8ece7f651f7d55a5555))
+
+### Refactoring
+
+* refactor: move plan result into seperate object ([`7754e55`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7754e5528b335a1dee4133a0d3f65f01b82ab91b))
+
+### Unknown
+
+* Merge pull request #16 from wandelbotsgmbh/feature/refactor-plan-response
+
+refactor: move plan result into seperate object ([`767de4f`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/767de4f7cc48f72302f1d491b6376e298b41a9da))
+
+
 ## v0.5.2 (2024-11-13)
 
 ### Fixes
