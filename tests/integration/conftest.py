@@ -1,8 +1,10 @@
+import os
+from urllib.parse import urlparse
+
 import pytest
 import requests
-import os
-from dotenv import load_dotenv, find_dotenv
 import requests.auth
+from dotenv import find_dotenv, load_dotenv
 
 
 def get_auth_token() -> dict[str, str]:
@@ -36,9 +38,13 @@ def check_test_motion_group_available(request):
         headers = get_auth_token()
         auth = get_basic_auth()
 
-        from urllib.parse import urlparse
         parsed_url = urlparse(nova_host)
-        if parsed_url.hostname and parsed_url.hostname.endswith(".wandelbots.io") and not headers and not auth:
+        if (
+            parsed_url.hostname
+            and parsed_url.hostname.endswith(".wandelbots.io")
+            and not headers
+            and not auth
+        ):
             pytest.fail(
                 "Please provide NOVA_ACCESS_TOKEN or NOVA_USERNAME and NOVA_PASSWORD in the environment (depending on the used auth method)."
             )
