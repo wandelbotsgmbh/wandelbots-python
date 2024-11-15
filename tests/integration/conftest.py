@@ -36,7 +36,9 @@ def check_test_motion_group_available(request):
         headers = get_auth_token()
         auth = get_basic_auth()
 
-        if "wandelbots.io" in nova_host and not headers and not auth:
+        from urllib.parse import urlparse
+        parsed_url = urlparse(nova_host)
+        if parsed_url.hostname and parsed_url.hostname.endswith(".wandelbots.io") and not headers and not auth:
             pytest.fail(
                 "Please provide NOVA_ACCESS_TOKEN or NOVA_USERNAME and NOVA_PASSWORD in the environment (depending on the used auth method)."
             )
