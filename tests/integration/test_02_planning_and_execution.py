@@ -34,9 +34,9 @@ async def test_motion_planning_and_execution():
     # Translate current TCP pose and plan a motion
     current_pose.translate(vector=v(x=0, y=0, z=-500))
     trajectory = [
-        planner.jptp(joints=home),
+        planner.joint_ptp(joints=home),
         planner.line(pose=current_pose),
-        planner.jptp(joints=home),
+        planner.joint_ptp(joints=home),
     ]
     plan_result = planner.plan(start_joints=motion_group.current_joints(), trajectory=trajectory)
 

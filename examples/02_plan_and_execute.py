@@ -36,9 +36,9 @@ if __name__ == "__main__":
     # Plan a motion home -> target_pose -> home
     planner = Planner(motion_group=my_robot)
     trajectory = [
-        planner.jptp(joints=home_joints),
-        planner.cptp(pose=target_pose),
-        planner.jptp(joints=home_joints),
+        planner.joint_ptp(joints=home_joints),
+        planner.cartesian_ptp(pose=target_pose),
+        planner.joint_ptp(joints=home_joints),
     ]
 
     # Try to plan the desired trajectory
