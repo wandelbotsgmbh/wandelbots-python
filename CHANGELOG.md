@@ -1,6 +1,35 @@
 # CHANGELOG
 
 
+## v0.5.6 (2024-11-15)
+
+### Fixes
+
+* fix: linter ([`4127bfa`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/4127bfa287000cbc5571103dc044dbe36a3f22b8))
+
+* fix: lint ([`38e388a`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/38e388aa0f5441d5cc257127a53d53871371e406))
+
+### Unknown
+
+* Merge pull request #19 from wandelbotsgmbh/alert-autofix-1
+
+Fix code scanning alert no. 1: Incomplete URL substring sanitization ([`28a8071`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/28a8071e528aafbada189d5d401362416714476d))
+
+* Fix code scanning alert no. 2: Incomplete URL substring sanitization
+
+Co-authored-by: Copilot Autofix powered by AI <62310815+github-advanced-security[bot]@users.noreply.github.com> ([`7ae9680`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/7ae968055a50362455399aa69d25a6eafa5cf700))
+
+* Fix code scanning alert no. 1: Incomplete URL substring sanitization
+
+Co-authored-by: Copilot Autofix powered by AI <62310815+github-advanced-security[bot]@users.noreply.github.com> ([`516200d`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/516200da7fb2b83e1292fb276816870df464b9c3))
+
+* Merge pull request #18 from wandelbotsgmbh/feature/rename-joint-and-cartesian-functions
+
+BREAKING CHANGE: rename joint and cartesian functions ([`1e03f62`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/1e03f620c5b597628cc7a7da70c1efa8b4616ab5))
+
+* BREAKING CHANGE: rename joint and cartesian functions ([`bb5c647`](https://github.com/wandelbotsgmbh/wandelbots-python/commit/bb5c6479063ddfb58c45705ad18e841a1a5e3cd2))
+
+
 ## v0.5.5 (2024-11-15)
 
 ### Fixes
