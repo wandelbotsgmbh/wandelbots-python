@@ -51,7 +51,7 @@ async def main():
 
     # Try to plan the desired trajectory asynchronously
     try:
-        plan_result, io_actions = await planner.plan_async(
+        plan_result = await planner.plan_async(
             trajectory=trajectory, start_joints=my_robot.current_joints()
         )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
@@ -59,9 +59,8 @@ async def main():
         exit()
 
     # Execute the motion asynchronously without yielding current execution state
-    motion = plan_result.motion
     print(f"Before execution {my_robot.get_io(DEFAULT_IO)=}")
-    await my_robot.execute_motion_async(motion=motion, speed=10, io_actions=io_actions)
+    await my_robot.execute_motion_async(plan_result=plan_result, speed=10)
     print(f"After execution {my_robot.get_io(DEFAULT_IO)=}")
 
 

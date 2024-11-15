@@ -1,6 +1,8 @@
-import pytest
-import os
 import asyncio
+import os
+
+import pytest
+
 from wandelbots import Instance, MotionGroup, Planner
 from wandelbots.exceptions import MotionExecutionInterruptedError
 from wandelbots.types import Vector3d as v
@@ -42,9 +44,9 @@ async def test_motion_planning_and_execution():
     assert plan_result.motion is not None, "Failed to plan motion"
 
     # Execute planned motion
-    async def execute_in_background(motion: str, speed: int):
+    async def execute_in_background(plan_result: Planner.PlanResult, speed: int):
         try:
-            async for move_response in motion_group.execute_motion_stream_async(motion, speed):
+            async for move_response in motion_group.execute_motion_stream_async(plan_result, speed):
                 print(move_response)
         except MotionExecutionInterruptedError:
             print("Motion execution was interrupted")

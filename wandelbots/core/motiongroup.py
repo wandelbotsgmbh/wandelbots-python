@@ -1,18 +1,18 @@
 import asyncio
-
-from typing import AsyncGenerator, Literal, Callable
 from contextlib import asynccontextmanager
-from wandelbots.types import MoveResponse, Pose, SetIO, IOValue
+from typing import AsyncGenerator, Callable, Literal
 
-from wandelbots.util.logger import _get_logger
-from wandelbots.core.instance import Instance
 from wandelbots.apis import controller as controller_api
+from wandelbots.apis import controller_io as controller_io_api
 from wandelbots.apis import device_configuration as device_configuration_api
 from wandelbots.apis import motion as motion_api
 from wandelbots.apis import motion_group as motion_group_api
 from wandelbots.apis import motion_group_infos as motion_group_infos_api
-from wandelbots.apis import controller_io as controller_io_api
+from wandelbots.core.instance import Instance
+from wandelbots.core.plan_result import PlanResult
 from wandelbots.exceptions import MotionGroupConnectionException
+from wandelbots.types import IOValue, MoveResponse, Pose
+from wandelbots.util.logger import _get_logger
 
 
 class MotionGroup:
@@ -136,16 +136,18 @@ class MotionGroup:
 
     async def execute_motion_stream_async(
         self,
-        motion: str,
+        plan_result: PlanResult,
         speed: int,
         response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",
-        io_actions: tuple[SetIO, ...] = (),
     ) -> AsyncGenerator[MoveResponse, None]:
         """Execute a motion asynchronously, yielding MoveResponse objects.
         Has to be used within an 'async for' loop.
         """
-        remaining_io_actions = sorted(list(io_actions), key=lambda x: x.location, reverse=True)
+        remaining_io_actions = sorted(
+            list(plan_result.io_actions), key=lambda x: x.location, reverse=True
+        )
+        motion = plan_result.plan_response.motion
 
         async with self._async_execution_context(motion):
             async for response in motion_api.stream_motion_async(
@@ -169,19 +171,18 @@ class MotionGroup:
 
     async def execute_motion_async(
         self,
-        motion: str,
+        plan_result: PlanResult,
         speed: int,
         response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",
-        io_actions: tuple[SetIO, ...] = (),
     ) -> None:
         """Execute a motion asynchronously, consuming MoveResponse without yielding.
         This wraps the execute_motion_stream_async method so it can be used without
         calling it withing a 'async for' and instead just 'await' it.
         """
-        async with self._async_execution_context(motion):
+        async with self._async_execution_context(plan_result.plan_response.motion):
             async for _ in self.execute_motion_stream_async(
-                motion, speed, response_rate_ms, direction, io_actions
+                plan_result, speed, response_rate_ms, direction
             ):
                 pass  # Consuming the response silently
 
@@ -195,14 +196,20 @@ class MotionGroup:
 
     def execute_motion(
         self,
-        motion: str,
+        plan_result: PlanResult,
         speed: int,
         response_rate_ms: int = 200,
         direction: Literal["forward", "backward"] = "forward",
         callback: Callable[[MoveResponse], None] = None,
     ) -> None:
         motion_api.stream_motion(
-            self.instance, self.cell, motion, speed, response_rate_ms, direction, callback
+            self.instance,
+            self.cell,
+            plan_result.plan_response.motion,
+            speed,
+            response_rate_ms,
+            direction,
+            callback,
         )
 
     def is_executing(self) -> bool:

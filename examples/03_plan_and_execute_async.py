@@ -1,12 +1,12 @@
-import os
-import logging
 import asyncio
+import logging
+import os
 
 from dotenv import load_dotenv
 
 from wandelbots import Instance, MotionGroup, Planner
-from wandelbots.types import Pose, Vector3d
 from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
+from wandelbots.types import Pose, Vector3d
 from wandelbots.util.logger import setup_logging
 
 load_dotenv()  # Load environment variables from .env
@@ -36,7 +36,7 @@ async def main():
 
     # Try to plan the desired trajectory asynchronously
     try:
-        plan_result, io_actions = await planner.plan_async(
+        plan_result = await planner.plan_async(
             trajectory=trajectory, start_joints=my_robot.current_joints()
         )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
@@ -44,14 +44,13 @@ async def main():
         exit()
 
     # Execute the motion asynchronously without yielding current execution state
-    motion = plan_result.motion
-    await my_robot.execute_motion_async(motion=motion, speed=10, io_actions=io_actions)
+    await my_robot.execute_motion_async(plan_result=plan_result, speed=10)
 
     # A motion can also be executed leveraging a bi-directional approach,
     # thus yielding the current execution state.
     # Here we just playback the same motion backwards
     async for state in my_robot.execute_motion_stream_async(
-        motion=motion, speed=10, direction="backward"
+        plan_result == plan_result, speed=10, direction="backward"
     ):
         time_until_complete = state.time_to_end
         print(f"Motion done in: {time_until_complete/1000} s")

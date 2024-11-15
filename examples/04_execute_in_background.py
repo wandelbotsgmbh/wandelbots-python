@@ -1,16 +1,16 @@
-import os
-import logging
 import asyncio
+import logging
+import os
 
 from dotenv import load_dotenv
 
 from wandelbots import Instance, MotionGroup, Planner
-from wandelbots.types import Pose, Vector3d
 from wandelbots.exceptions import (
+    MotionExecutionInterruptedError,
     PlanningFailedException,
     PlanningPartialSuccessWarning,
-    MotionExecutionInterruptedError,
 )
+from wandelbots.types import Pose, Vector3d
 from wandelbots.util.logger import setup_logging
 
 load_dotenv()  # Load environment variables from .env
@@ -40,7 +40,7 @@ async def main():
 
     # Try to plan the desired trajectory asynchronously
     try:
-        plan_result, io_actions = await planner.plan_async(
+        plan_result = await planner.plan_async(
             trajectory=trajectory, start_joints=my_robot.current_joints()
         )
     except (PlanningFailedException, PlanningPartialSuccessWarning) as e:
@@ -51,9 +51,7 @@ async def main():
     # by defining a function that will be executed as a task
     async def execute_in_background(motion: str, speed: int):
         try:
-            async for state in my_robot.execute_motion_stream_async(
-                motion, speed, io_actions=io_actions
-            ):
+            async for state in my_robot.execute_motion_stream_async(plan_result, speed):
                 time_until_complete = state.time_to_end
                 print(f"Motion done in: {time_until_complete/1000} s")
         except (

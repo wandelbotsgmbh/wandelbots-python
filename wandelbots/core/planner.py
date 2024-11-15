@@ -1,7 +1,8 @@
 from typing import Union
 
-from wandelbots import MotionGroup
 from wandelbots.apis import motion as motion_api
+from wandelbots.core.motiongroup import MotionGroup
+from wandelbots.core.plan_result import PlanResult
 from wandelbots.exceptions import PlanningFailedException, PlanningPartialSuccessWarning
 from wandelbots.types import (
     Command,
@@ -88,25 +89,21 @@ class Planner:
 
     def plan(
         self, trajectory: list[Union[Command, IOValue]], start_joints: list[float], tcp: str = None
-    ) -> Union[PlanSuccessfulResponse, tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]]:
+    ) -> PlanResult:
         tcp = self._from_default_tcp(tcp)
         move_commands, io_actions = self._resolve_commands(trajectory)
         rae_plan_request = self._create_plan_request(tcp, move_commands, start_joints)
         plan_response = self._plan_with_rae(rae_plan_request)
-        if not io_actions:
-            return plan_response
-        return plan_response, io_actions
+        return PlanResult(plan_response, io_actions)
 
     async def plan_async(
         self, trajectory: list[CommandType], start_joints: list[float], tcp: str = None
-    ) -> Union[PlanSuccessfulResponse, tuple[PlanSuccessfulResponse, tuple[SetIO, ...]]]:
+    ) -> PlanResult:
         tcp = self._from_default_tcp(tcp)
         move_commands, io_actions = self._resolve_commands(trajectory)
         rae_plan_request = self._create_plan_request(tcp, move_commands, start_joints)
         plan_response = await self._plan_with_rae_async(rae_plan_request)
-        if not io_actions:
-            return plan_response
-        return plan_response, io_actions
+        return PlanResult(plan_response, io_actions)
 
     @staticmethod
     def _resolve_commands(trajectory: list[CommandType]) -> tuple[list[Command], tuple[SetIO, ...]]:
