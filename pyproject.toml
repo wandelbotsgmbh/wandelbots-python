@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "wandelbots"
-version = "0.5.6"
-description = "Official Python client for the Wandelbots API"
+version = "0.5.7"
+description = "Deprecated Python client for the Wandelbots API. There will be no further updates of this package. Please consider migrating to [wandelbots-nova](https://pypi.org/project/wandelbots-nova)."
 authors = ["Martin George <martin.george@wandelbots.com>"]
 readme = "README.md"
 
